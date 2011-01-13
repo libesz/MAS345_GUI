@@ -1,0 +1,11 @@
+MAS345_GUI 
+
+ This is a little project, which aims to use the Mastech MAS-345 type digital multimerer's PC interface (RS232). Since I couldn't find any working software for win x64, I started to develop my own one. I found only one perl based solution ( https://github.com/mschilli/device-mas345-perl ) by mschilli, so I understood the crazy serialport settings (600bps, 7n2) and the protocol based on that, thanks for it :) .
+
+ The code is pretty dirty, because I am not a C# expert, just learning it, so if you want to join and improve it, don't hesitate.
+ 
+ Currently there is only one feature: displaying the actual measure, with a history table.
+
+ 
+Source is available on: https://github.com/libesz/MAS345_GUI
+Created with Microsoft Visual Studio Express 2010 (.NET framework 3.5)
