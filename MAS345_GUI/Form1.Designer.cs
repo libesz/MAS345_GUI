@@ -41,13 +41,13 @@
             this.groupBoxControl = new System.Windows.Forms.GroupBox();
             this.groupBoxHistory = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.mAS345dataBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.groupBoxMeasure = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.timeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.measureTypeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.valueDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.unitDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.mAS345dataBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.groupBoxMeasure = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.groupBoxControl.SuspendLayout();
@@ -74,13 +74,13 @@
             this.label1.ForeColor = System.Drawing.SystemColors.HotTrack;
             this.label1.Location = new System.Drawing.Point(3, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(375, 94);
+            this.label1.Size = new System.Drawing.Size(402, 78);
             this.label1.TabIndex = 0;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(84, 19);
+            this.button1.Location = new System.Drawing.Point(94, 19);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(142, 23);
             this.button1.TabIndex = 1;
@@ -99,7 +99,7 @@
             // button2
             // 
             this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(232, 19);
+            this.button2.Location = new System.Drawing.Point(259, 19);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(146, 23);
             this.button2.TabIndex = 2;
@@ -137,9 +137,10 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 426);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 417);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(409, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(436, 22);
+            this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 5;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -157,9 +158,9 @@
             this.groupBoxControl.Controls.Add(this.button1);
             this.groupBoxControl.Controls.Add(this.COMlabel);
             this.groupBoxControl.Controls.Add(this.numericUpDown1);
-            this.groupBoxControl.Location = new System.Drawing.Point(12, 373);
+            this.groupBoxControl.Location = new System.Drawing.Point(12, 364);
             this.groupBoxControl.Name = "groupBoxControl";
-            this.groupBoxControl.Size = new System.Drawing.Size(385, 50);
+            this.groupBoxControl.Size = new System.Drawing.Size(412, 50);
             this.groupBoxControl.TabIndex = 6;
             this.groupBoxControl.TabStop = false;
             this.groupBoxControl.Text = "Control";
@@ -171,9 +172,9 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxHistory.AutoSize = true;
             this.groupBoxHistory.Controls.Add(this.dataGridView1);
-            this.groupBoxHistory.Location = new System.Drawing.Point(12, 170);
+            this.groupBoxHistory.Location = new System.Drawing.Point(12, 160);
             this.groupBoxHistory.Name = "groupBoxHistory";
-            this.groupBoxHistory.Size = new System.Drawing.Size(384, 197);
+            this.groupBoxHistory.Size = new System.Drawing.Size(411, 198);
             this.groupBoxHistory.TabIndex = 7;
             this.groupBoxHistory.TabStop = false;
             this.groupBoxHistory.Text = "History";
@@ -198,8 +199,35 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(378, 178);
+            this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dataGridView1.Size = new System.Drawing.Size(405, 179);
             this.dataGridView1.TabIndex = 0;
+            // 
+            // mAS345dataBindingSource
+            // 
+            this.mAS345dataBindingSource.DataSource = typeof(MAS345_GUI.MAS345_data);
+            // 
+            // groupBoxMeasure
+            // 
+            this.groupBoxMeasure.AutoSize = true;
+            this.groupBoxMeasure.Controls.Add(this.label2);
+            this.groupBoxMeasure.Controls.Add(this.label1);
+            this.groupBoxMeasure.Location = new System.Drawing.Point(12, 12);
+            this.groupBoxMeasure.Name = "groupBoxMeasure";
+            this.groupBoxMeasure.Size = new System.Drawing.Size(408, 142);
+            this.groupBoxMeasure.TabIndex = 8;
+            this.groupBoxMeasure.TabStop = false;
+            this.groupBoxMeasure.Text = "Measure";
+            // 
+            // label2
+            // 
+            this.label2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label2.Location = new System.Drawing.Point(3, 100);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(402, 39);
+            this.label2.TabIndex = 1;
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // timeDataGridViewTextBoxColumn
             // 
@@ -227,7 +255,7 @@
             this.valueDataGridViewTextBoxColumn.HeaderText = "Value";
             this.valueDataGridViewTextBoxColumn.Name = "valueDataGridViewTextBoxColumn";
             this.valueDataGridViewTextBoxColumn.ReadOnly = true;
-            this.valueDataGridViewTextBoxColumn.Width = 80;
+            this.valueDataGridViewTextBoxColumn.Width = 105;
             // 
             // unitDataGridViewTextBoxColumn
             // 
@@ -236,46 +264,19 @@
             this.unitDataGridViewTextBoxColumn.HeaderText = "Unit";
             this.unitDataGridViewTextBoxColumn.Name = "unitDataGridViewTextBoxColumn";
             this.unitDataGridViewTextBoxColumn.ReadOnly = true;
-            this.unitDataGridViewTextBoxColumn.Width = 65;
-            // 
-            // mAS345dataBindingSource
-            // 
-            this.mAS345dataBindingSource.DataSource = typeof(MAS345_GUI.MAS345_data);
-            // 
-            // groupBoxMeasure
-            // 
-            this.groupBoxMeasure.AutoSize = true;
-            this.groupBoxMeasure.Controls.Add(this.label2);
-            this.groupBoxMeasure.Controls.Add(this.label1);
-            this.groupBoxMeasure.Location = new System.Drawing.Point(12, 12);
-            this.groupBoxMeasure.Name = "groupBoxMeasure";
-            this.groupBoxMeasure.Size = new System.Drawing.Size(381, 152);
-            this.groupBoxMeasure.TabIndex = 8;
-            this.groupBoxMeasure.TabStop = false;
-            this.groupBoxMeasure.Text = "Measure";
-            // 
-            // label2
-            // 
-            this.label2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label2.Location = new System.Drawing.Point(3, 110);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(375, 39);
-            this.label2.TabIndex = 1;
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.unitDataGridViewTextBoxColumn.Width = 60;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(409, 448);
+            this.ClientSize = new System.Drawing.Size(436, 439);
             this.Controls.Add(this.groupBoxMeasure);
             this.Controls.Add(this.groupBoxHistory);
             this.Controls.Add(this.groupBoxControl);
             this.Controls.Add(this.statusStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(425, 486);
-            this.MinimumSize = new System.Drawing.Size(425, 486);
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "MAS345 GUI";
