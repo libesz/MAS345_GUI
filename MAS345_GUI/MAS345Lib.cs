@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO.Ports;
+using System.Threading;
 
-namespace MAS345GUI
+namespace MAS345_GUI
 {
-    class MeasureUnit
+    public class MeasureUnit
     {
         public DateTime Time { get; set; }
         public MeasureType Type { get; set; }
@@ -18,8 +19,10 @@ namespace MAS345GUI
             this.Type = Type;
             this.Value = Value;
         }
+        public MeasureUnit(MeasureUnit TheOther): this(TheOther.Time, TheOther.Type, TheOther.Value ) {}
+        protected MeasureUnit() { }
     }
-    enum MeasureType
+    public enum MeasureType
     {
         Unknown,
         AcCurrent,
@@ -33,52 +36,138 @@ namespace MAS345GUI
         hFe
     };
 
-    class MasSerialPort : SerialPort
+    public class MasSerialPort : SerialPort
     {
-        private bool _DebugMode;
-        public bool DebugMode
+#if DEBUG
+        private MasEmulator Emulator;
+        private bool _IsOpen;
+        public MasSerialPort()
+        {
+            Emulator = new MasEmulator();
+            _IsOpen = false;
+        }
+
+        public bool isOpen
         {
             get
             {
-                return _DebugMode;
-            }
-            set
-            {
-                _DebugMode = value;
+                return _IsOpen;
             }
         }
-
-        public override bool isOpen
+        public new void Open()
         {
-            get
-            {
-                if (_DebugMode) return true;
-                else return base.IsOpen;
-            }
+            _IsOpen = true;
         }
-        public override void Open()
+        public new void Close()
         {
-            if (_DebugMode) return;
-            else base.Open();
+            _IsOpen = false;
         }
+#endif
+        public MeasureUnit ReadData()
+        {
+            MeasureUnit ReturnValue;
+#if DEBUG
+            Thread.Sleep(1000);
+            ReturnValue = Emulator.GiveNextMeasure();
+#else
+            System.Text.Encoding enc = System.Text.Encoding.ASCII;
+            byte[] input_data = new byte[14];
+            String input_string = "";
 
+            SerialPort port = e.Argument as SerialPort;
+            while (true)
+            {
+                if (backgroundWorker1.CancellationPending) { e.Cancel = true; return; }
+                try
+                {
+                    port.RtsEnable = false;
+                    port.DtrEnable = true;
+                    port.WriteLine("");
+                    Thread.Sleep(1000);
+                    port.Read(input_data, 0, 14);
+
+                    input_string = enc.GetString(input_data);
+
+                    backgroundWorker1.ReportProgress(1, input_string);
+                }
+                catch
+                {
+                    backgroundWorker1.ReportProgress(2, "Can't recieve data from " + serialPort1.PortName);
+                }
+            }
+                String input_string = e.UserState as String;
+                MAS345_data decodedData = new MAS345_data();
+
+                decodedData.time = DateTime.Now.ToString();
+
+                decodedData.unit = input_string.Substring(9, 4);
+
+                if(input_string.Substring(0, 2).Equals("AC"))
+                {
+                    if (decodedData.unit.Substring(3, 1).Equals("A"))
+                    {
+                        decodedData.measureType = "AC Current";
+                    }
+                    else
+                    {
+                        decodedData.measureType = "AC Voltage";
+                    }
+                }
+                else if (input_string.Substring(0, 2).Equals("DC"))
+                {
+                    if (decodedData.unit.Substring(3, 1).Equals("A"))
+                    {
+                        decodedData.measureType = "DC Current";
+                    }
+                    else
+                    {
+                        decodedData.measureType = "DC Voltage";
+                    }
+                }
+                else if (input_string.Substring(0, 2).Equals("OH"))
+                {
+                    decodedData.measureType = "Resistance";
+                }
+                else if (input_string.Substring(0, 2).Equals("DI"))
+                {
+                    decodedData.measureType = "Diode";
+                }
+                else if (input_string.Substring(0, 2).Equals("TE"))
+                {
+                    decodedData.measureType = "Temperature";
+                }
+                else if (input_string.Substring(0, 2).Equals("CA"))
+                {
+                    decodedData.measureType = "Capacity";
+                }
+                else
+                {
+                    decodedData.measureType = "hFE";
+                }
+
+                if (input_string.Substring(3, 1).Equals("-"))
+                {
+                    decodedData.value = "-";
+                }
+
+                decodedData.unit = decodedData.unit.TrimStart();
+                decodedData.value += input_string.Substring(4, 5);
+
+#endif
+            return ReturnValue;
+        }
     }
 
+#if DEBUG
     class MasEmulator
     {
         private MeasureUnit _LastMeasure;
         public MasEmulator()
         {
-            _LastMeasure = new MeasureUnit(DateTime.Now, MeasureType.DcVoltage, 1.0);
+            _LastMeasure = new MeasureUnit(DateTime.Now, MeasureType.DcVoltage, 0.0);
         }
 
-        public string RawMeasure()
-        {
-            string ReturnValue = "";
-            return ReturnValue;
-        }
-
-        private MeasureUnit GiveNextMeasure()
+        public MeasureUnit GiveNextMeasure()
         {
             _LastMeasure.Value++;
             if (_LastMeasure.Value == 10.0)
@@ -91,9 +180,10 @@ namespace MAS345GUI
                 {
                     _LastMeasure.Type = MeasureType.DcVoltage;
                 }
-                _LastMeasure.Value = 1.0;
+                _LastMeasure.Value = 0.0;
             }
-            return _LastMeasure;
+            return new MeasureUnit(_LastMeasure);
         }
     }
+#endif
 }
