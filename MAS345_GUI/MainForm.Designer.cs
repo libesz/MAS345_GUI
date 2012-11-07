@@ -66,8 +66,8 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.commonColorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.serialPort1 = new MAS345_GUI.MasSerialPort();
             this.gridColorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.serialPort1 = new MAS345_GUI.MasSerialPort();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.groupBoxControl.SuspendLayout();
@@ -219,16 +219,19 @@
             this.startButton.TabIndex = 6;
             this.startButton.Text = "Start";
             this.startButton.UseVisualStyleBackColor = true;
+            this.startButton.Click += new System.EventHandler(this.startButton_Click);
             // 
             // contCheckBox
             // 
             this.contCheckBox.AutoSize = true;
+            this.contCheckBox.Enabled = false;
             this.contCheckBox.Location = new System.Drawing.Point(139, 23);
             this.contCheckBox.Name = "contCheckBox";
             this.contCheckBox.Size = new System.Drawing.Size(102, 17);
             this.contCheckBox.TabIndex = 5;
             this.contCheckBox.Text = "Continous mode";
             this.contCheckBox.UseVisualStyleBackColor = true;
+            this.contCheckBox.CheckedChanged += new System.EventHandler(this.contCheckBox_CheckedChanged);
             // 
             // dataGridView1
             // 

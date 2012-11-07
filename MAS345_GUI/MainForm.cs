@@ -15,6 +15,7 @@ namespace MAS345_GUI
     {
         public List<MeasureListItem> MeasureList;
         private bool Connected = false;
+        private bool Started = false;
 
         public MainForm()
         {
@@ -27,10 +28,17 @@ namespace MAS345_GUI
         {
             if (Connected)
             {
-                if (backgroundWorker1.IsBusy) backgroundWorker1.CancelAsync();
                 ConnectButton.Text = "Connect";
                 Connected = false;
+
+                contCheckBox.Enabled = false;
                 startButton.Enabled = false;
+
+                if (serialPort1.IsOpen)
+                {
+                    serialPort1.Close();
+                    toolStripStatusLabel1.Text = serialPort1.PortName + " closed";
+                }
             }
             else
             {
@@ -39,11 +47,11 @@ namespace MAS345_GUI
                     serialPort1.PortName = "COM" + numericUpDown1.Value;
                     try
                     {
+                        contCheckBox.Enabled = true;
+                        startButton.Enabled = true;
                         serialPort1.Open();
                         ConnectButton.Text = "Disconnect";
                         Connected = true;
-                        startButton.Enabled = true;
-                        backgroundWorker1.RunWorkerAsync(serialPort1);
                     }
                     catch
                     {
@@ -61,7 +69,7 @@ namespace MAS345_GUI
         {
             MasSerialPort Port = e.Argument as MasSerialPort;
             MeasureListItem NewMeasure;
-            while (true)
+            do
             {
                 if (backgroundWorker1.CancellationPending) { e.Cancel = true; return; }
                 try
@@ -75,6 +83,7 @@ namespace MAS345_GUI
                     backgroundWorker1.ReportProgress(2, "Can't recieve data from " + serialPort1.PortName);
                 }
             }
+            while (Port.ContinousMode);
             
         }
 
@@ -124,11 +133,8 @@ namespace MAS345_GUI
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if( serialPort1.IsOpen )
-            {
-                serialPort1.Close();
-                toolStripStatusLabel1.Text = serialPort1.PortName + " closed";
-            }
+            Started = false;
+            HandleStartButton();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -157,6 +163,43 @@ namespace MAS345_GUI
                 dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = gridColorDialog1.Color;
                 dataGridView1.Rows[e.RowIndex].DefaultCellStyle.SelectionBackColor = GetBrighterColor(gridColorDialog1.Color);
                 (dataGridView1.Rows[e.RowIndex].DataBoundItem as MeasureListItem).ItemColor = gridColorDialog1.Color;
+            }
+        }
+
+        private void contCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            serialPort1.ContinousMode = contCheckBox.Checked;
+        }
+
+        private void startButton_Click(object sender, EventArgs e)
+        {
+            if (Started)
+            {
+                Started = false;
+                HandleStartButton();
+                if (backgroundWorker1.IsBusy) backgroundWorker1.CancelAsync();
+            }
+            else
+            {
+                Started = true;
+                HandleStartButton();
+                backgroundWorker1.RunWorkerAsync(serialPort1);
+            }
+        }
+
+        private void HandleStartButton()
+        {
+            if (Started)
+            {
+                contCheckBox.Enabled = false;
+                ConnectButton.Enabled = false;
+                startButton.Text = "Stop";
+            }
+            else
+            {
+                ConnectButton.Enabled = true;
+                contCheckBox.Enabled = true;
+                startButton.Text = "Start";
             }
         }
     }

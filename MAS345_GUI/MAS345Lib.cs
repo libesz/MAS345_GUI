@@ -63,6 +63,8 @@ namespace MAS345_GUI
             _IsOpen = false;
         }
 #endif
+        public bool ContinousMode = false;
+
         public MeasureUnit ReadData()
         {
             MeasureUnit ReturnValue;
