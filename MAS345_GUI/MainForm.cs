@@ -84,7 +84,7 @@ namespace MAS345_GUI
             {
                 int LastRow = 0;
                 MeasureListItem NewMeasure = e.UserState as MeasureListItem;
-                NewMeasure.ItemColor = colorDialog1.Color;
+                NewMeasure.ItemColor = commonColorDialog1.Color;
                 NewMeasure.ItemComment = commentTextBox.Text;
 
                 label1.Text = NewMeasure.Value + " " + NewMeasure.Type;
@@ -92,15 +92,7 @@ namespace MAS345_GUI
                 LastRow = mAS345dataBindingSource.Add(NewMeasure);
                 dataGridView1.Rows[LastRow].DefaultCellStyle.BackColor = NewMeasure.ItemColor;
 
-                try
-                {
-                    dataGridView1.Rows[LastRow].DefaultCellStyle.SelectionBackColor = Color.FromArgb(NewMeasure.ItemColor.A,
-                                                                                                     NewMeasure.ItemColor.R - 20,
-                                                                                                     NewMeasure.ItemColor.G - 20,
-                                                                                                     NewMeasure.ItemColor.B - 20);
-                }
-                catch
-                {  }
+                dataGridView1.Rows[LastRow].DefaultCellStyle.SelectionBackColor = GetBrighterColor(NewMeasure.ItemColor);
                 dataGridView1.ClearSelection();
                 dataGridView1.Rows[LastRow].Selected = true;
 
@@ -109,6 +101,24 @@ namespace MAS345_GUI
             else
             {
                 toolStripStatusLabel1.Text = e.UserState as String;
+            }
+        }
+
+        private Color GetBrighterColor( Color OrigColor )
+        {
+            const int factor = 30;
+            int R, G, B;
+
+            R = (OrigColor.R > factor) ? (OrigColor.R - factor) : 0;
+            G = (OrigColor.G > factor) ? (OrigColor.G - factor) : 0;
+            B = (OrigColor.B > factor) ? (OrigColor.B - factor) : 0;
+            try
+            {
+                return Color.FromArgb(OrigColor.A, R, G, B);
+            }
+            catch
+            {
+                return Color.LightGray;
             }
         }
 
@@ -131,8 +141,8 @@ namespace MAS345_GUI
 
         private void colorSelectorPanel_Click(object sender, EventArgs e)
         {
-            colorDialog1.ShowDialog();
-            colorSelectorPanel.BackColor = colorDialog1.Color;
+            commonColorDialog1.ShowDialog();
+            colorSelectorPanel.BackColor = commonColorDialog1.Color;
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -143,7 +153,10 @@ namespace MAS345_GUI
             }
             else if (e.ColumnIndex == 6)
             {
-
+                gridColorDialog1.ShowDialog();
+                dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = gridColorDialog1.Color;
+                dataGridView1.Rows[e.RowIndex].DefaultCellStyle.SelectionBackColor = GetBrighterColor(gridColorDialog1.Color);
+                (dataGridView1.Rows[e.RowIndex].DataBoundItem as MeasureListItem).ItemColor = gridColorDialog1.Color;
             }
         }
     }
