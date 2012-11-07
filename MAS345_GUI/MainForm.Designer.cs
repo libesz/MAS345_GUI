@@ -40,6 +40,12 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBoxControl = new System.Windows.Forms.GroupBox();
+            this.colorSelectorPanel = new System.Windows.Forms.Panel();
+            this.colorLabel = new System.Windows.Forms.Label();
+            this.commentLabel = new System.Windows.Forms.Label();
+            this.commentTextBox = new System.Windows.Forms.TextBox();
+            this.startButton = new System.Windows.Forms.Button();
+            this.contCheckBox = new System.Windows.Forms.CheckBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.mAS345dataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBoxMeasure = new System.Windows.Forms.GroupBox();
@@ -52,19 +58,14 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contCheckBox = new System.Windows.Forms.CheckBox();
-            this.startButton = new System.Windows.Forms.Button();
-            this.commentTextBox = new System.Windows.Forms.TextBox();
-            this.commentLabel = new System.Windows.Forms.Label();
-            this.colorLabel = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.colorSelectorPanel = new System.Windows.Forms.Panel();
             this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Unit = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Delete = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.ChangeColor = new System.Windows.Forms.DataGridViewButtonColumn();
             this.serialPort1 = new MAS345_GUI.MasSerialPort();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.statusStrip1.SuspendLayout();
@@ -173,13 +174,68 @@
             this.groupBoxControl.TabStop = false;
             this.groupBoxControl.Text = "Control";
             // 
+            // colorSelectorPanel
+            // 
+            this.colorSelectorPanel.BackColor = System.Drawing.Color.White;
+            this.colorSelectorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.colorSelectorPanel.Location = new System.Drawing.Point(324, 46);
+            this.colorSelectorPanel.Name = "colorSelectorPanel";
+            this.colorSelectorPanel.Size = new System.Drawing.Size(100, 23);
+            this.colorSelectorPanel.TabIndex = 10;
+            this.colorSelectorPanel.Click += new System.EventHandler(this.colorSelectorPanel_Click);
+            // 
+            // colorLabel
+            // 
+            this.colorLabel.AutoSize = true;
+            this.colorLabel.Location = new System.Drawing.Point(270, 51);
+            this.colorLabel.Name = "colorLabel";
+            this.colorLabel.Size = new System.Drawing.Size(31, 13);
+            this.colorLabel.TabIndex = 9;
+            this.colorLabel.Text = "Color";
+            // 
+            // commentLabel
+            // 
+            this.commentLabel.AutoSize = true;
+            this.commentLabel.Location = new System.Drawing.Point(270, 24);
+            this.commentLabel.Name = "commentLabel";
+            this.commentLabel.Size = new System.Drawing.Size(51, 13);
+            this.commentLabel.TabIndex = 8;
+            this.commentLabel.Text = "Comment";
+            // 
+            // commentTextBox
+            // 
+            this.commentTextBox.Location = new System.Drawing.Point(324, 19);
+            this.commentTextBox.Name = "commentTextBox";
+            this.commentTextBox.Size = new System.Drawing.Size(100, 20);
+            this.commentTextBox.TabIndex = 7;
+            // 
+            // startButton
+            // 
+            this.startButton.Enabled = false;
+            this.startButton.Location = new System.Drawing.Point(139, 46);
+            this.startButton.Name = "startButton";
+            this.startButton.Size = new System.Drawing.Size(75, 23);
+            this.startButton.TabIndex = 6;
+            this.startButton.Text = "Start";
+            this.startButton.UseVisualStyleBackColor = true;
+            // 
+            // contCheckBox
+            // 
+            this.contCheckBox.AutoSize = true;
+            this.contCheckBox.Location = new System.Drawing.Point(139, 23);
+            this.contCheckBox.Name = "contCheckBox";
+            this.contCheckBox.Size = new System.Drawing.Size(102, 17);
+            this.contCheckBox.TabIndex = 5;
+            this.contCheckBox.Text = "Continous mode";
+            this.contCheckBox.UseVisualStyleBackColor = true;
+            // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToResizeColumns = false;
             this.dataGridView1.AllowUserToResizeRows = false;
             this.dataGridView1.AutoGenerateColumns = false;
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
@@ -196,7 +252,8 @@
             this.Value,
             this.Unit,
             this.Comment,
-            this.Delete});
+            this.Delete,
+            this.ChangeColor});
             this.dataGridView1.DataSource = this.mAS345dataBindingSource;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
@@ -207,9 +264,9 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dataGridView1.Location = new System.Drawing.Point(3, 3);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -226,6 +283,7 @@
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(422, 173);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // groupBoxMeasure
             // 
@@ -331,64 +389,9 @@
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
-            // contCheckBox
-            // 
-            this.contCheckBox.AutoSize = true;
-            this.contCheckBox.Location = new System.Drawing.Point(139, 23);
-            this.contCheckBox.Name = "contCheckBox";
-            this.contCheckBox.Size = new System.Drawing.Size(102, 17);
-            this.contCheckBox.TabIndex = 5;
-            this.contCheckBox.Text = "Continous mode";
-            this.contCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // startButton
-            // 
-            this.startButton.Enabled = false;
-            this.startButton.Location = new System.Drawing.Point(139, 46);
-            this.startButton.Name = "startButton";
-            this.startButton.Size = new System.Drawing.Size(75, 23);
-            this.startButton.TabIndex = 6;
-            this.startButton.Text = "Start";
-            this.startButton.UseVisualStyleBackColor = true;
-            // 
-            // commentTextBox
-            // 
-            this.commentTextBox.Location = new System.Drawing.Point(324, 19);
-            this.commentTextBox.Name = "commentTextBox";
-            this.commentTextBox.Size = new System.Drawing.Size(100, 20);
-            this.commentTextBox.TabIndex = 7;
-            // 
-            // commentLabel
-            // 
-            this.commentLabel.AutoSize = true;
-            this.commentLabel.Location = new System.Drawing.Point(270, 24);
-            this.commentLabel.Name = "commentLabel";
-            this.commentLabel.Size = new System.Drawing.Size(51, 13);
-            this.commentLabel.TabIndex = 8;
-            this.commentLabel.Text = "Comment";
-            // 
-            // colorLabel
-            // 
-            this.colorLabel.AutoSize = true;
-            this.colorLabel.Location = new System.Drawing.Point(270, 51);
-            this.colorLabel.Name = "colorLabel";
-            this.colorLabel.Size = new System.Drawing.Size(31, 13);
-            this.colorLabel.TabIndex = 9;
-            this.colorLabel.Text = "Color";
-            // 
             // colorDialog1
             // 
             this.colorDialog1.Color = System.Drawing.Color.White;
-            // 
-            // colorSelectorPanel
-            // 
-            this.colorSelectorPanel.BackColor = System.Drawing.Color.White;
-            this.colorSelectorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.colorSelectorPanel.Location = new System.Drawing.Point(324, 46);
-            this.colorSelectorPanel.Name = "colorSelectorPanel";
-            this.colorSelectorPanel.Size = new System.Drawing.Size(100, 23);
-            this.colorSelectorPanel.TabIndex = 10;
-            this.colorSelectorPanel.Click += new System.EventHandler(this.colorSelectorPanel_Click);
             // 
             // Time
             // 
@@ -396,7 +399,6 @@
             this.Time.HeaderText = "Time";
             this.Time.Name = "Time";
             this.Time.ReadOnly = true;
-            this.Time.Width = 55;
             // 
             // Type
             // 
@@ -404,7 +406,6 @@
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
-            this.Type.Width = 56;
             // 
             // Value
             // 
@@ -412,7 +413,6 @@
             this.Value.HeaderText = "Value";
             this.Value.Name = "Value";
             this.Value.ReadOnly = true;
-            this.Value.Width = 59;
             // 
             // Unit
             // 
@@ -420,22 +420,27 @@
             this.Unit.HeaderText = "Unit";
             this.Unit.Name = "Unit";
             this.Unit.ReadOnly = true;
-            this.Unit.Width = 51;
             // 
             // Comment
             // 
             this.Comment.DataPropertyName = "ItemComment";
             this.Comment.HeaderText = "Comment";
             this.Comment.Name = "Comment";
-            this.Comment.ReadOnly = true;
-            this.Comment.Width = 76;
             // 
             // Delete
             // 
             this.Delete.HeaderText = "Delete";
             this.Delete.Name = "Delete";
-            this.Delete.ReadOnly = true;
-            this.Delete.Width = 44;
+            this.Delete.Text = "Delete";
+            this.Delete.UseColumnTextForButtonValue = true;
+            // 
+            // ChangeColor
+            // 
+            this.ChangeColor.HeaderText = "Color";
+            this.ChangeColor.Name = "ChangeColor";
+            this.ChangeColor.ReadOnly = true;
+            this.ChangeColor.Text = "Select";
+            this.ChangeColor.UseColumnTextForButtonValue = true;
             // 
             // MainForm
             // 
@@ -510,6 +515,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Unit;
         private System.Windows.Forms.DataGridViewTextBoxColumn Comment;
         private System.Windows.Forms.DataGridViewButtonColumn Delete;
+        private System.Windows.Forms.DataGridViewButtonColumn ChangeColor;
     }
 }
 

@@ -101,7 +101,9 @@ namespace MAS345_GUI
                 }
                 catch
                 {  }
-                
+                dataGridView1.ClearSelection();
+                dataGridView1.Rows[LastRow].Selected = true;
+
                 toolStripStatusLabel1.Text = "Connected to " + serialPort1.PortName;
             }
             else
@@ -132,6 +134,18 @@ namespace MAS345_GUI
             colorDialog1.ShowDialog();
             colorSelectorPanel.BackColor = colorDialog1.Color;
         }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 5)
+            {
+                mAS345dataBindingSource.RemoveCurrent();
+            }
+            else if (e.ColumnIndex == 6)
+            {
+
+            }
+        }
     }
     public class MeasureListItem : MeasureUnit
     {
@@ -142,7 +156,7 @@ namespace MAS345_GUI
             : base(TheOther)
         {
             this.ItemComment = "";
-            this.ItemColor = Color.Aqua;
+            this.ItemColor = Color.White;
         }
     }
 }
