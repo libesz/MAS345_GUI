@@ -11,52 +11,49 @@ using System.IO.Ports;
 
 namespace MAS345_GUI
 {
-    public class MeasureListItem : MeasureUnit
-    {
-        public string ItemComment{ get; set; }
-        public Color ItemColor { get; set; }
-
-        public MeasureListItem(MeasureUnit TheOther)
-            : base(TheOther)
-        {
-            this.ItemComment = "";
-            this.ItemColor = Color.Aqua;
-        }
-    }
-
     public partial class MainForm : Form
     {
-        private MasSerialPort serialPort1;
         public List<MeasureListItem> MeasureList;
+        private bool Connected = false;
 
         public MainForm()
         {
             InitializeComponent();
-            serialPort1 = new MasSerialPort();
             MeasureList = new List<MeasureListItem>();
             mAS345dataBindingSource.DataSource = MeasureList;
         }
 
         private void ConnectButton_Click(object sender, EventArgs e)
         {
-            if (!serialPort1.IsOpen)
+            if (Connected)
             {
-                serialPort1.PortName = "COM" + numericUpDown1.Value;
-                try
-                {
-                    serialPort1.Open();
-                    ConnectButton.Enabled = false;
-                    DisconnectButton.Enabled = true;
-                    backgroundWorker1.RunWorkerAsync(serialPort1);
-                }
-                catch
-                {
-                    toolStripStatusLabel1.Text = "Failed to open " + serialPort1.PortName;
-                }
+                if (backgroundWorker1.IsBusy) backgroundWorker1.CancelAsync();
+                ConnectButton.Text = "Connect";
+                Connected = false;
+                startButton.Enabled = false;
             }
             else
             {
-                toolStripStatusLabel1.Text = serialPort1.PortName + " is already open";
+                if (!serialPort1.IsOpen)
+                {
+                    serialPort1.PortName = "COM" + numericUpDown1.Value;
+                    try
+                    {
+                        serialPort1.Open();
+                        ConnectButton.Text = "Disconnect";
+                        Connected = true;
+                        startButton.Enabled = true;
+                        backgroundWorker1.RunWorkerAsync(serialPort1);
+                    }
+                    catch
+                    {
+                        toolStripStatusLabel1.Text = "Failed to open " + serialPort1.PortName;
+                    }
+                }
+                else
+                {
+                    toolStripStatusLabel1.Text = serialPort1.PortName + " is already open";
+                }
             }
         }
 
@@ -85,24 +82,32 @@ namespace MAS345_GUI
         {
             if (e.ProgressPercentage == 1)
             {
+                int LastRow = 0;
                 MeasureListItem NewMeasure = e.UserState as MeasureListItem;
+                NewMeasure.ItemColor = colorDialog1.Color;
+                NewMeasure.ItemComment = commentTextBox.Text;
 
                 label1.Text = NewMeasure.Value + " " + NewMeasure.Type;
                 label2.Text = NewMeasure.Type.ToString();
-                mAS345dataBindingSource.Add(NewMeasure);
+                LastRow = mAS345dataBindingSource.Add(NewMeasure);
+                dataGridView1.Rows[LastRow].DefaultCellStyle.BackColor = NewMeasure.ItemColor;
+
+                try
+                {
+                    dataGridView1.Rows[LastRow].DefaultCellStyle.SelectionBackColor = Color.FromArgb(NewMeasure.ItemColor.A,
+                                                                                                     NewMeasure.ItemColor.R - 20,
+                                                                                                     NewMeasure.ItemColor.G - 20,
+                                                                                                     NewMeasure.ItemColor.B - 20);
+                }
+                catch
+                {  }
+                
                 toolStripStatusLabel1.Text = "Connected to " + serialPort1.PortName;
             }
             else
             {
                 toolStripStatusLabel1.Text = e.UserState as String;
             }
-        }
-
-        private void DisconnectButton_Click(object sender, EventArgs e)
-        {
-            if (backgroundWorker1.IsBusy) backgroundWorker1.CancelAsync();
-            ConnectButton.Enabled = true;
-            DisconnectButton.Enabled = false;
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -122,6 +127,22 @@ namespace MAS345_GUI
             }
         }
 
+        private void colorSelectorPanel_Click(object sender, EventArgs e)
+        {
+            colorDialog1.ShowDialog();
+            colorSelectorPanel.BackColor = colorDialog1.Color;
+        }
+    }
+    public class MeasureListItem : MeasureUnit
+    {
+        public string ItemComment { get; set; }
+        public Color ItemColor { get; set; }
+
+        public MeasureListItem(MeasureUnit TheOther)
+            : base(TheOther)
+        {
+            this.ItemComment = "";
+            this.ItemColor = Color.Aqua;
+        }
     }
 }
-

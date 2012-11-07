@@ -29,10 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.ConnectButton = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.DisconnectButton = new System.Windows.Forms.Button();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.COMlabel = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -50,12 +52,20 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contCheckBox = new System.Windows.Forms.CheckBox();
+            this.startButton = new System.Windows.Forms.Button();
+            this.commentTextBox = new System.Windows.Forms.TextBox();
+            this.commentLabel = new System.Windows.Forms.Label();
+            this.colorLabel = new System.Windows.Forms.Label();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.colorSelectorPanel = new System.Windows.Forms.Panel();
             this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Unit = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Delete = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.serialPort1 = new MAS345_GUI.MasSerialPort();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.groupBoxControl.SuspendLayout();
@@ -85,9 +95,9 @@
             // 
             // ConnectButton
             // 
-            this.ConnectButton.Location = new System.Drawing.Point(94, 19);
+            this.ConnectButton.Location = new System.Drawing.Point(7, 46);
             this.ConnectButton.Name = "ConnectButton";
-            this.ConnectButton.Size = new System.Drawing.Size(142, 23);
+            this.ConnectButton.Size = new System.Drawing.Size(75, 23);
             this.ConnectButton.TabIndex = 1;
             this.ConnectButton.Text = "Connect";
             this.ConnectButton.UseVisualStyleBackColor = true;
@@ -101,20 +111,9 @@
             this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
             this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
-            // DisconnectButton
-            // 
-            this.DisconnectButton.Enabled = false;
-            this.DisconnectButton.Location = new System.Drawing.Point(259, 19);
-            this.DisconnectButton.Name = "DisconnectButton";
-            this.DisconnectButton.Size = new System.Drawing.Size(146, 23);
-            this.DisconnectButton.TabIndex = 2;
-            this.DisconnectButton.Text = "Disconnect";
-            this.DisconnectButton.UseVisualStyleBackColor = true;
-            this.DisconnectButton.Click += new System.EventHandler(this.DisconnectButton_Click);
-            // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(43, 19);
+            this.numericUpDown1.Location = new System.Drawing.Point(52, 20);
             this.numericUpDown1.Minimum = new decimal(new int[] {
             1,
             0,
@@ -132,7 +131,7 @@
             // COMlabel
             // 
             this.COMlabel.AutoSize = true;
-            this.COMlabel.Location = new System.Drawing.Point(6, 24);
+            this.COMlabel.Location = new System.Drawing.Point(13, 24);
             this.COMlabel.Name = "COMlabel";
             this.COMlabel.Size = new System.Drawing.Size(31, 13);
             this.COMlabel.TabIndex = 4;
@@ -142,7 +141,7 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 417);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 430);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(436, 22);
             this.statusStrip1.SizingGrip = false;
@@ -157,14 +156,19 @@
             // 
             // groupBoxControl
             // 
-            this.groupBoxControl.Controls.Add(this.DisconnectButton);
+            this.groupBoxControl.Controls.Add(this.colorSelectorPanel);
+            this.groupBoxControl.Controls.Add(this.colorLabel);
+            this.groupBoxControl.Controls.Add(this.commentLabel);
+            this.groupBoxControl.Controls.Add(this.commentTextBox);
+            this.groupBoxControl.Controls.Add(this.startButton);
+            this.groupBoxControl.Controls.Add(this.contCheckBox);
             this.groupBoxControl.Controls.Add(this.ConnectButton);
             this.groupBoxControl.Controls.Add(this.COMlabel);
             this.groupBoxControl.Controls.Add(this.numericUpDown1);
             this.groupBoxControl.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBoxControl.Location = new System.Drawing.Point(0, 367);
+            this.groupBoxControl.Location = new System.Drawing.Point(0, 355);
             this.groupBoxControl.Name = "groupBoxControl";
-            this.groupBoxControl.Size = new System.Drawing.Size(436, 50);
+            this.groupBoxControl.Size = new System.Drawing.Size(436, 75);
             this.groupBoxControl.TabIndex = 6;
             this.groupBoxControl.TabStop = false;
             this.groupBoxControl.Text = "Control";
@@ -177,6 +181,14 @@
             this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Time,
@@ -186,13 +198,33 @@
             this.Comment,
             this.Delete});
             this.dataGridView1.DataSource = this.mAS345dataBindingSource;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(3, 3);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.RowTemplate.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
+            this.dataGridView1.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dataGridView1.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
             this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGridView1.Size = new System.Drawing.Size(422, 180);
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(422, 173);
             this.dataGridView1.TabIndex = 0;
             // 
             // groupBoxMeasure
@@ -203,7 +235,7 @@
             this.groupBoxMeasure.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBoxMeasure.Location = new System.Drawing.Point(0, 0);
             this.groupBoxMeasure.Name = "groupBoxMeasure";
-            this.groupBoxMeasure.Size = new System.Drawing.Size(436, 127);
+            this.groupBoxMeasure.Size = new System.Drawing.Size(436, 122);
             this.groupBoxMeasure.TabIndex = 8;
             this.groupBoxMeasure.TabStop = false;
             this.groupBoxMeasure.Text = "Measure";
@@ -212,7 +244,7 @@
             // 
             this.label2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label2.Location = new System.Drawing.Point(3, 85);
+            this.label2.Location = new System.Drawing.Point(3, 80);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(430, 39);
             this.label2.TabIndex = 1;
@@ -232,8 +264,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(436, 343);
-            this.splitContainer1.SplitterDistance = 127;
+            this.splitContainer1.Size = new System.Drawing.Size(436, 331);
+            this.splitContainer1.SplitterDistance = 122;
             this.splitContainer1.TabIndex = 9;
             // 
             // tabControl1
@@ -244,7 +276,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(436, 212);
+            this.tabControl1.Size = new System.Drawing.Size(436, 205);
             this.tabControl1.TabIndex = 8;
             // 
             // Grid
@@ -253,7 +285,7 @@
             this.Grid.Location = new System.Drawing.Point(4, 22);
             this.Grid.Name = "Grid";
             this.Grid.Padding = new System.Windows.Forms.Padding(3);
-            this.Grid.Size = new System.Drawing.Size(428, 186);
+            this.Grid.Size = new System.Drawing.Size(428, 179);
             this.Grid.TabIndex = 0;
             this.Grid.Text = "Grid";
             this.Grid.UseVisualStyleBackColor = true;
@@ -263,7 +295,7 @@
             this.Graph.Location = new System.Drawing.Point(4, 22);
             this.Graph.Name = "Graph";
             this.Graph.Padding = new System.Windows.Forms.Padding(3);
-            this.Graph.Size = new System.Drawing.Size(428, 186);
+            this.Graph.Size = new System.Drawing.Size(428, 179);
             this.Graph.TabIndex = 1;
             this.Graph.Text = "Graph";
             this.Graph.UseVisualStyleBackColor = true;
@@ -299,6 +331,65 @@
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
+            // contCheckBox
+            // 
+            this.contCheckBox.AutoSize = true;
+            this.contCheckBox.Location = new System.Drawing.Point(139, 23);
+            this.contCheckBox.Name = "contCheckBox";
+            this.contCheckBox.Size = new System.Drawing.Size(102, 17);
+            this.contCheckBox.TabIndex = 5;
+            this.contCheckBox.Text = "Continous mode";
+            this.contCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // startButton
+            // 
+            this.startButton.Enabled = false;
+            this.startButton.Location = new System.Drawing.Point(139, 46);
+            this.startButton.Name = "startButton";
+            this.startButton.Size = new System.Drawing.Size(75, 23);
+            this.startButton.TabIndex = 6;
+            this.startButton.Text = "Start";
+            this.startButton.UseVisualStyleBackColor = true;
+            // 
+            // commentTextBox
+            // 
+            this.commentTextBox.Location = new System.Drawing.Point(324, 19);
+            this.commentTextBox.Name = "commentTextBox";
+            this.commentTextBox.Size = new System.Drawing.Size(100, 20);
+            this.commentTextBox.TabIndex = 7;
+            // 
+            // commentLabel
+            // 
+            this.commentLabel.AutoSize = true;
+            this.commentLabel.Location = new System.Drawing.Point(270, 24);
+            this.commentLabel.Name = "commentLabel";
+            this.commentLabel.Size = new System.Drawing.Size(51, 13);
+            this.commentLabel.TabIndex = 8;
+            this.commentLabel.Text = "Comment";
+            // 
+            // colorLabel
+            // 
+            this.colorLabel.AutoSize = true;
+            this.colorLabel.Location = new System.Drawing.Point(270, 51);
+            this.colorLabel.Name = "colorLabel";
+            this.colorLabel.Size = new System.Drawing.Size(31, 13);
+            this.colorLabel.TabIndex = 9;
+            this.colorLabel.Text = "Color";
+            // 
+            // colorDialog1
+            // 
+            this.colorDialog1.Color = System.Drawing.Color.White;
+            // 
+            // colorSelectorPanel
+            // 
+            this.colorSelectorPanel.BackColor = System.Drawing.Color.White;
+            this.colorSelectorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.colorSelectorPanel.Location = new System.Drawing.Point(324, 46);
+            this.colorSelectorPanel.Name = "colorSelectorPanel";
+            this.colorSelectorPanel.Size = new System.Drawing.Size(100, 23);
+            this.colorSelectorPanel.TabIndex = 10;
+            this.colorSelectorPanel.Click += new System.EventHandler(this.colorSelectorPanel_Click);
+            // 
             // Time
             // 
             this.Time.DataPropertyName = "Time";
@@ -333,6 +424,7 @@
             // 
             // Comment
             // 
+            this.Comment.DataPropertyName = "ItemComment";
             this.Comment.HeaderText = "Comment";
             this.Comment.Name = "Comment";
             this.Comment.ReadOnly = true;
@@ -349,14 +441,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(436, 439);
+            this.ClientSize = new System.Drawing.Size(436, 452);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.groupBoxControl);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(452, 490);
             this.Name = "MainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "MAS345 GUI";
@@ -387,7 +479,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button ConnectButton;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.Button DisconnectButton;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label COMlabel;
         private System.Windows.Forms.StatusStrip statusStrip1;
@@ -405,6 +496,14 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private MasSerialPort serialPort1;
+        private System.Windows.Forms.TextBox commentTextBox;
+        private System.Windows.Forms.Button startButton;
+        private System.Windows.Forms.CheckBox contCheckBox;
+        private System.Windows.Forms.Label colorLabel;
+        private System.Windows.Forms.Label commentLabel;
+        private System.Windows.Forms.Panel colorSelectorPanel;
+        private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Time;
         private System.Windows.Forms.DataGridViewTextBoxColumn Type;
         private System.Windows.Forms.DataGridViewTextBoxColumn Value;
