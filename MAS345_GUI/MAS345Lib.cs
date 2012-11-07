@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.IO.Ports;
 using System.Threading;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MAS345_GUI
 {
+    [Serializable()]
     public class MeasureUnit
     {
         public DateTime Time { get; set; }

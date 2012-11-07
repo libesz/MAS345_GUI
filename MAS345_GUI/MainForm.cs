@@ -8,6 +8,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 using System.IO.Ports;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace MAS345_GUI
 {
@@ -202,7 +204,47 @@ namespace MAS345_GUI
                 startButton.Text = "Start";
             }
         }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (Stream stream = File.Open("data.bin", FileMode.Create))
+                {
+                    BinaryFormatter bin = new BinaryFormatter();
+                    bin.Serialize(stream, MeasureList);
+                }
+            }
+            catch (IOException)
+            {
+            }
+        }
+
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (Stream stream = File.Open("data.bin", FileMode.Open))
+                {
+                    BinaryFormatter bin = new BinaryFormatter();
+                    MeasureList = (List<MeasureListItem>)bin.Deserialize(stream);
+
+                    mAS345dataBindingSource.DataSource = MeasureList;
+                    foreach (DataGridViewRow ActualRow in dataGridView1.Rows)
+                    {
+                        ActualRow.DefaultCellStyle.BackColor = (ActualRow.DataBoundItem as MeasureListItem).ItemColor;
+                        ActualRow.DefaultCellStyle.SelectionBackColor = GetBrighterColor(ActualRow.DefaultCellStyle.BackColor);
+                    }
+                }
+            }
+            catch (IOException)
+            {
+            }
+
+        }
     }
+
+    [Serializable()]
     public class MeasureListItem : MeasureUnit
     {
         public string ItemComment { get; set; }
