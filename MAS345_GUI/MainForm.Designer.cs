@@ -70,18 +70,18 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBoxGraph = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.graphPanel = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.graphShowSelectorLabel = new System.Windows.Forms.Label();
+            this.lastMeasureTypeRB = new System.Windows.Forms.RadioButton();
+            this.selectedRB = new System.Windows.Forms.RadioButton();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBoxHistory = new System.Windows.Forms.GroupBox();
             this.groupBoxDefaults = new System.Windows.Forms.GroupBox();
-            this.lastMeasureTypeRB = new System.Windows.Forms.RadioButton();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.selectedRB = new System.Windows.Forms.RadioButton();
-            this.label3 = new System.Windows.Forms.Label();
             this.serialPort1 = new MAS345_GUI.MasSerialPort();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -95,12 +95,12 @@
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBoxGraph.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
-            this.graphPanel.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.groupBoxHistory.SuspendLayout();
             this.groupBoxDefaults.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // bigLabel
@@ -508,45 +508,30 @@
             // 
             this.tableLayoutPanel6.ColumnCount = 1;
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Controls.Add(this.graphPanel, 0, 1);
             this.tableLayoutPanel6.Controls.Add(this.flowLayoutPanel1, 0, 0);
+            this.tableLayoutPanel6.Controls.Add(this.pictureBox1, 0, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 2;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 130F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel6.Size = new System.Drawing.Size(472, 330);
             this.tableLayoutPanel6.TabIndex = 1;
             // 
-            // graphPanel
+            // flowLayoutPanel1
             // 
-            this.graphPanel.Controls.Add(this.label3);
-            this.graphPanel.Controls.Add(this.label2);
-            this.graphPanel.Controls.Add(this.label1);
-            this.graphPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.graphPanel.Location = new System.Drawing.Point(3, 33);
-            this.graphPanel.Name = "graphPanel";
-            this.graphPanel.Size = new System.Drawing.Size(466, 294);
-            this.graphPanel.TabIndex = 0;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(1, 21);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "label2";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(1, 4);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "label1";
+            this.flowLayoutPanel1.Controls.Add(this.graphShowSelectorLabel);
+            this.flowLayoutPanel1.Controls.Add(this.lastMeasureTypeRB);
+            this.flowLayoutPanel1.Controls.Add(this.selectedRB);
+            this.flowLayoutPanel1.Controls.Add(this.label1);
+            this.flowLayoutPanel1.Controls.Add(this.label2);
+            this.flowLayoutPanel1.Controls.Add(this.label3);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(466, 124);
+            this.flowLayoutPanel1.TabIndex = 1;
             // 
             // graphShowSelectorLabel
             // 
@@ -557,6 +542,66 @@
             this.graphShowSelectorLabel.Size = new System.Drawing.Size(82, 13);
             this.graphShowSelectorLabel.TabIndex = 1;
             this.graphShowSelectorLabel.Text = "Show on graph:";
+            // 
+            // lastMeasureTypeRB
+            // 
+            this.lastMeasureTypeRB.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lastMeasureTypeRB.AutoSize = true;
+            this.lastMeasureTypeRB.Location = new System.Drawing.Point(91, 3);
+            this.lastMeasureTypeRB.Name = "lastMeasureTypeRB";
+            this.lastMeasureTypeRB.Size = new System.Drawing.Size(134, 17);
+            this.lastMeasureTypeRB.TabIndex = 1;
+            this.lastMeasureTypeRB.TabStop = true;
+            this.lastMeasureTypeRB.Text = "Last measurement type";
+            this.lastMeasureTypeRB.UseVisualStyleBackColor = true;
+            // 
+            // selectedRB
+            // 
+            this.selectedRB.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.selectedRB.AutoSize = true;
+            this.selectedRB.Location = new System.Drawing.Point(231, 3);
+            this.selectedRB.Name = "selectedRB";
+            this.selectedRB.Size = new System.Drawing.Size(133, 17);
+            this.selectedRB.TabIndex = 2;
+            this.selectedRB.TabStop = true;
+            this.selectedRB.Text = "Only the selected ones";
+            this.selectedRB.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(370, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "label1";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(411, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "label2";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 23);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(35, 13);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "label3";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Location = new System.Drawing.Point(3, 133);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(466, 194);
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
             // 
             // tableLayoutPanel5
             // 
@@ -615,50 +660,6 @@
             this.groupBoxDefaults.TabStop = false;
             this.groupBoxDefaults.Text = "Defaults";
             // 
-            // lastMeasureTypeRB
-            // 
-            this.lastMeasureTypeRB.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lastMeasureTypeRB.AutoSize = true;
-            this.lastMeasureTypeRB.Location = new System.Drawing.Point(91, 3);
-            this.lastMeasureTypeRB.Name = "lastMeasureTypeRB";
-            this.lastMeasureTypeRB.Size = new System.Drawing.Size(134, 17);
-            this.lastMeasureTypeRB.TabIndex = 1;
-            this.lastMeasureTypeRB.TabStop = true;
-            this.lastMeasureTypeRB.Text = "Last measurement type";
-            this.lastMeasureTypeRB.UseVisualStyleBackColor = true;
-            // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.Controls.Add(this.graphShowSelectorLabel);
-            this.flowLayoutPanel1.Controls.Add(this.lastMeasureTypeRB);
-            this.flowLayoutPanel1.Controls.Add(this.selectedRB);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(466, 24);
-            this.flowLayoutPanel1.TabIndex = 1;
-            // 
-            // selectedRB
-            // 
-            this.selectedRB.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.selectedRB.AutoSize = true;
-            this.selectedRB.Location = new System.Drawing.Point(231, 3);
-            this.selectedRB.Name = "selectedRB";
-            this.selectedRB.Size = new System.Drawing.Size(133, 17);
-            this.selectedRB.TabIndex = 2;
-            this.selectedRB.TabStop = true;
-            this.selectedRB.Text = "Only the selected ones";
-            this.selectedRB.UseVisualStyleBackColor = true;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(1, 48);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "label3";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -673,6 +674,8 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "MAS345 GUI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -688,15 +691,14 @@
             this.tableLayoutPanel2.ResumeLayout(false);
             this.groupBoxGraph.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
-            this.graphPanel.ResumeLayout(false);
-            this.graphPanel.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.groupBoxHistory.ResumeLayout(false);
             this.groupBoxDefaults.ResumeLayout(false);
             this.groupBoxDefaults.PerformLayout();
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -744,7 +746,6 @@
         private System.Windows.Forms.GroupBox groupBoxHistory;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.GroupBox groupBoxGraph;
-        private System.Windows.Forms.Panel graphPanel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
@@ -754,6 +755,7 @@
         private System.Windows.Forms.RadioButton lastMeasureTypeRB;
         private System.Windows.Forms.RadioButton selectedRB;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 
