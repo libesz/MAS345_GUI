@@ -15,6 +15,30 @@ namespace MAS345_GUI
         public MeasureType Type { get; set; }
         public Double Value { get; set; }
 
+        public string Unit
+        {
+            get
+            {
+                string ReturnValue = "";
+                if ((Type == MeasureType.AcCurrent) || (Type == MeasureType.DcCurrent))
+                {
+                    ReturnValue = "A";
+                }
+                if ((Type == MeasureType.AcVoltage) || (Type == MeasureType.DcVoltage))
+                {
+                    ReturnValue = "V";
+                }
+                return ReturnValue;
+            }
+        }
+        public string ValueWithUnit
+        {
+            get
+            {
+                return Value + " " + Unit;
+            }
+        }
+
         public MeasureUnit(DateTime Time, MeasureType Type, Double Value)
         {
             this.Time = Time;
@@ -173,6 +197,7 @@ namespace MAS345_GUI
 
         public MeasureUnit GiveNextMeasure()
         {
+            _LastMeasure.Time = DateTime.Now;
             _LastMeasure.Value++;
             if (_LastMeasure.Value == 10.0)
             {

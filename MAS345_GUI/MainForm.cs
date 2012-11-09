@@ -16,6 +16,7 @@ namespace MAS345_GUI
     public partial class MainForm : Form
     {
         public List<MeasureListItem> MeasureList;
+
         private bool Connected = false;
         private bool Started = false;
 
@@ -35,6 +36,7 @@ namespace MAS345_GUI
 
                 contCheckBox.Enabled = false;
                 startButton.Enabled = false;
+                portNumberSelector.Enabled = true;
 
                 if (serialPort1.IsOpen)
                 {
@@ -46,11 +48,12 @@ namespace MAS345_GUI
             {
                 if (!serialPort1.IsOpen)
                 {
-                    serialPort1.PortName = "COM" + numericUpDown1.Value;
+                    serialPort1.PortName = "COM" + portNumberSelector.Value;
                     try
                     {
                         contCheckBox.Enabled = true;
                         startButton.Enabled = true;
+                        portNumberSelector.Enabled = false;
                         serialPort1.Open();
                         ConnectButton.Text = "Disconnect";
                         Connected = true;
@@ -98,11 +101,11 @@ namespace MAS345_GUI
                 NewMeasure.ItemColor = commonColorDialog1.Color;
                 NewMeasure.ItemComment = commentTextBox.Text;
 
-                label1.Text = NewMeasure.Value + " " + NewMeasure.Type;
-                label2.Text = NewMeasure.Type.ToString();
+                bigLabel.Text = NewMeasure.ValueWithUnit;
+                modeLabel.Text = NewMeasure.Type.ToString();
                 LastRow = mAS345dataBindingSource.Add(NewMeasure);
-                dataGridView1.Rows[LastRow].DefaultCellStyle.BackColor = NewMeasure.ItemColor;
 
+                dataGridView1.Rows[LastRow].DefaultCellStyle.BackColor = NewMeasure.ItemColor;
                 dataGridView1.Rows[LastRow].DefaultCellStyle.SelectionBackColor = GetBrighterColor(NewMeasure.ItemColor);
                 dataGridView1.ClearSelection();
                 dataGridView1.Rows[LastRow].Selected = true;
@@ -155,11 +158,11 @@ namespace MAS345_GUI
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 5)
+            if (e.ColumnIndex == 4)
             {
                 mAS345dataBindingSource.RemoveCurrent();
             }
-            else if (e.ColumnIndex == 6)
+            else if (e.ColumnIndex == 5)
             {
                 gridColorDialog1.ShowDialog();
                 dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = gridColorDialog1.Color;
@@ -185,7 +188,7 @@ namespace MAS345_GUI
             {
                 Started = true;
                 HandleStartButton();
-                backgroundWorker1.RunWorkerAsync(serialPort1);
+                if (!backgroundWorker1.IsBusy) backgroundWorker1.RunWorkerAsync(serialPort1);
             }
         }
 
@@ -240,7 +243,58 @@ namespace MAS345_GUI
             catch (IOException)
             {
             }
+        }
 
+        private void mAS345dataBindingSource_ListChanged(object sender, ListChangedEventArgs e)
+        {
+            handleGraph();
+        }
+
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            handleGraph();
+        }
+
+        private void handleGraph()
+        {
+            if (MeasureList.Count > 0)
+            {
+                List<MeasureListItem> MeasureOnGraph;
+                //determine the last measures in the same mode
+                if (lastMeasureTypeRB.Checked)
+                {
+                    MeasureType LastType = MeasureList[MeasureList.Count - 1].Type;
+                    int MeasureStarted = MeasureList.FindLastIndex(
+                        delegate(MeasureListItem Item)
+                        {
+                            return (Item.Type != LastType);
+                        }
+                    );
+                    MeasureStarted++;
+                    MeasureOnGraph = MeasureList.GetRange(MeasureStarted, MeasureList.Count - MeasureStarted);
+                    MeasureOnGraph.ForEach(delegate(MeasureListItem Item) { label3.Text += Item.ValueWithUnit + "\n"; });
+                }
+                else
+                {
+                    MeasureOnGraph = new List<MeasureListItem>();
+                    foreach (DataGridViewRow Row in dataGridView1.SelectedRows)
+                    {
+                        MeasureOnGraph.Add((MeasureListItem)Row.DataBoundItem);
+                    }
+                }
+                if (MeasureOnGraph.Count > 1)
+                {
+                    label1.Text = MeasureOnGraph.Max(obj => obj.Value).ToString();
+                    label2.Text = MeasureOnGraph.Min(obj => obj.Value).ToString();
+                    label3.Text = "";
+                }
+                else
+                {
+                    label1.Text = "Not enough selection";
+                    label2.Text = "";
+                    label3.Text = "";
+                }
+            }
         }
     }
 
