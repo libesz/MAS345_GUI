@@ -10,6 +10,7 @@ using System.Threading;
 using System.IO.Ports;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Drawing.Drawing2D;
 
 namespace MAS345_GUI
 {
@@ -22,6 +23,11 @@ namespace MAS345_GUI
         private bool Started = false;
 
         private Bitmap GraphBitmap;
+        const int GraphGrids = 10;
+        const int LeftMargin = 80;
+        const int RightMargin = 20;
+        const int TopMargin = 15;
+        const int BottomMargin = 15;
 
         public MainForm()
         {
@@ -67,6 +73,7 @@ namespace MAS345_GUI
                         serialPort1.Open();
                         ConnectButton.Text = "Disconnect";
                         Connected = true;
+                        toolStripStatusLabel1.Text = "Connected to " + serialPort1.PortName;
                     }
                     catch
                     {
@@ -119,12 +126,7 @@ namespace MAS345_GUI
                 dataGridView1.Rows[LastRow].DefaultCellStyle.SelectionBackColor = GetBrighterColor(NewMeasure.ItemColor);
 
                 if (mAS345dataBindingSource.Count == 1) dataGridView1.ClearSelection();
-                /*dataGridView1.ClearSelection();
-                dataGridView1.Rows[LastRow].Selected = true;*/
-
                 dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
-
-                toolStripStatusLabel1.Text = "Connected to " + serialPort1.PortName;
             }
             else
             {
@@ -261,15 +263,20 @@ namespace MAS345_GUI
 
         private void mAS345dataBindingSource_ListChanged(object sender, ListChangedEventArgs e)
         {
-            updateGraphList();
+            updateGraph();
         }
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
-            updateGraphList();
+            updateGraph();
         }
 
-        private void updateGraphList()
+        private void lastMeasureTypeRB_CheckedChanged(object sender, EventArgs e)
+        {
+            updateGraph();
+        }
+
+        private void updateGraph()
         {
             if (MeasureList.Count > 0)
             {
@@ -300,57 +307,102 @@ namespace MAS345_GUI
                         MeasureOnGraph.Add((MeasureListItem)Row.DataBoundItem);
                     }
                 }
-                if (MeasureOnGraph.Count > 1)
+                if (MeasureOnGraph.Count > 0)
                 {
-                    label1.Text = MeasureOnGraph.Max(obj => obj.Value).ToString();
-                    label2.Text = MeasureOnGraph.Min(obj => obj.Value).ToString();
-                    label3.Text = "";
-                    MeasureOnGraph.ForEach(delegate(MeasureListItem Item) { label3.Text += Item.ValueWithUnit + "\n"; });
-                    drawGraph();
+                    bool NotSameType = false;
+                    MeasureOnGraph.ForEach(delegate(MeasureListItem Item) { if (MeasureOnGraph[0].Type != Item.Type) NotSameType = true; });
+                    if (NotSameType)
+                    {
+                        toolStripStatusLabel1.Text = "Not all the selected measures are from the same type.";
+                        initGraph();
+                    }
+                    else
+                    {
+                        toolStripStatusLabel1.Text = "";
+                        drawGraph();
+                    }
                 }
                 else
                 {
-                    label1.Text = "Not enough selection";
-                    label2.Text = "";
-                    label3.Text = "";
+                    toolStripStatusLabel1.Text = "Nothing to display on chart.";
+                    initGraph();
                 }
             }
         }
         private void drawGraph()
         {
             initGraph();
+            Graphics gr = Graphics.FromImage(GraphBitmap);
+            double GridMaxValue = MeasureOnGraph.Max(obj => obj.Value) * 1.2;
+            double GridMinValue = MeasureOnGraph.Min(obj => obj.Value) - ( MeasureOnGraph.Max(obj => obj.Value) * 0.2);
 
-            /*Graphics gr = Graphics.FromImage(GraphBitmap);
-            gr.FillEllipse(Brushes.Pink, 10, 10, 180, 80);
-            pictureBox1.Image = GraphBitmap; */
+            for (int i = 0; i <= GraphGrids; i++)
+            {
+                //grid values
+                using (Font the_font = new Font("Courier New", 8, FontStyle.Bold, GraphicsUnit.Point))
+                {
+                    string tempText = (((GridMaxValue - GridMinValue)
+                                      * (GraphGrids - i) / GraphGrids)
+                                      + GridMinValue).ToString("0.####");
+                    tempText +=  " " + MeasureOnGraph[0].Unit;
+
+                    SizeF TextSize = gr.MeasureString(tempText.ToString(), the_font);
+                    gr.DrawString(tempText.ToString(), the_font, Brushes.Blue,
+                                    LeftMargin - TextSize.Width,
+                                    (TopMargin + ((pictureBox1.Size.Height) - BottomMargin - TopMargin) * i / GraphGrids) - (TextSize.Height / 2));
+                }
+            }
+            double tempValueDomain = (GridMaxValue - GridMinValue);
+            for (int i = 0; i < MeasureOnGraph.Count; i++)
+            {
+                int tempX = (int)(LeftMargin + ((pictureBox1.Width - LeftMargin - RightMargin) * (i+1) / (MeasureOnGraph.Count+1))) - 3;
+                int tempY = (int)(TopMargin + ((pictureBox1.Height - TopMargin - BottomMargin) * (GridMaxValue-MeasureOnGraph[i].Value) / tempValueDomain)) - 3;
+
+                //gr.DrawLine(Pens.Blue, new Point(tempX, 0), new Point(tempX, pictureBox1.Height));
+                gr.FillEllipse(Brushes.Red, tempX,
+                                            tempY, 6, 6);
+                gr.DrawEllipse(Pens.Blue, tempX,
+                                          tempY, 6, 6);
+
+                using (Font the_font = new Font("Courier New", 8, FontStyle.Bold, GraphicsUnit.Point))
+                {
+                    gr.DrawString( MeasureOnGraph[i].Value.ToString(), the_font, Brushes.Blue,
+                                   tempX + 5,
+                                   tempY + 5);
+                }
+            }
+            gr.Dispose();
         }
+
         private void initGraph()
         {
-            const int LeftMargin = 30;
-            const int TopMargin = 15;
-            const int BottomMargin = 15;
             GraphBitmap = new Bitmap(pictureBox1.Size.Width, pictureBox1.Size.Height);
 
             Graphics gr = Graphics.FromImage(GraphBitmap);
-            gr.FillRectangle(Brushes.LightGray, new Rectangle(0, 0, pictureBox1.Size.Width, pictureBox1.Size.Height));
-            gr.DrawRectangle(Pens.Black, new Rectangle(0, 0, pictureBox1.Size.Width - 1, pictureBox1.Size.Height - 1));
+            //bright bg
+            gr.Clear(this.BackColor);
 
-            gr.DrawLine(Pens.Black, new Point(LeftMargin, 0),
-                                    new Point(LeftMargin, (pictureBox1.Size.Height - 1)));
+            //gray chart background
+            gr.FillRectangle(Brushes.LightGray, new Rectangle(LeftMargin, TopMargin, pictureBox1.Size.Width - LeftMargin - RightMargin, pictureBox1.Size.Height - TopMargin - BottomMargin));
 
-            for (int i = 1; i < 10; i++)
+            //left margin
+            gr.DrawLine(Pens.Black, new Point(LeftMargin, TopMargin),
+                                    new Point(LeftMargin, (pictureBox1.Size.Height - BottomMargin)));
+            //right margin
+            gr.DrawLine(Pens.Black, new Point(pictureBox1.Size.Width - RightMargin, TopMargin),
+                                    new Point(pictureBox1.Size.Width - RightMargin, (pictureBox1.Size.Height - BottomMargin)));
+
+            //grids
+            for (int i = 0; i <= GraphGrids; i++)
             {
-                gr.DrawLine(Pens.Black, new Point(LeftMargin, TopMargin + ((pictureBox1.Size.Height) - BottomMargin - TopMargin) * i / 10),
-                                        new Point(pictureBox1.Size.Width, TopMargin + ((pictureBox1.Size.Height) - BottomMargin - TopMargin) * i / 10));
+                using (Pen the_pen = new Pen(Color.Gray, 1))
+                {
+                    the_pen.DashStyle = DashStyle.Dash;
+                    gr.DrawLine(the_pen, new Point(LeftMargin, TopMargin + ((pictureBox1.Size.Height) - BottomMargin - TopMargin) * i / GraphGrids),
+                                            new Point(pictureBox1.Size.Width - RightMargin, TopMargin + ((pictureBox1.Size.Height) - BottomMargin - TopMargin) * i / GraphGrids));
+                }                    
             }
-
-            /*gr.DrawLine(Pens.Black, new Point(LeftMargin, TopMargin ),
-                                    new Point(pictureBox1.Size.Width, TopMargin));
-
-            gr.DrawLine(Pens.Black, new Point(LeftMargin, (pictureBox1.Size.Height)-BottomMargin),
-                                    new Point(pictureBox1.Size.Width, (pictureBox1.Size.Height) - BottomMargin));
-            */
-            label2.Text = pictureBox1.Size.Width.ToString();
+            gr.Dispose();
             pictureBox1.Image = GraphBitmap;
         }
 

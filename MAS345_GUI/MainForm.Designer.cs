@@ -74,9 +74,6 @@
             this.graphShowSelectorLabel = new System.Windows.Forms.Label();
             this.lastMeasureTypeRB = new System.Windows.Forms.RadioButton();
             this.selectedRB = new System.Windows.Forms.RadioButton();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -514,7 +511,7 @@
             this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 2;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 130F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel6.Size = new System.Drawing.Size(472, 330);
             this.tableLayoutPanel6.TabIndex = 1;
@@ -524,13 +521,10 @@
             this.flowLayoutPanel1.Controls.Add(this.graphShowSelectorLabel);
             this.flowLayoutPanel1.Controls.Add(this.lastMeasureTypeRB);
             this.flowLayoutPanel1.Controls.Add(this.selectedRB);
-            this.flowLayoutPanel1.Controls.Add(this.label1);
-            this.flowLayoutPanel1.Controls.Add(this.label2);
-            this.flowLayoutPanel1.Controls.Add(this.label3);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(466, 124);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(466, 24);
             this.flowLayoutPanel1.TabIndex = 1;
             // 
             // graphShowSelectorLabel
@@ -554,6 +548,7 @@
             this.lastMeasureTypeRB.TabStop = true;
             this.lastMeasureTypeRB.Text = "Last measurement type";
             this.lastMeasureTypeRB.UseVisualStyleBackColor = true;
+            this.lastMeasureTypeRB.CheckedChanged += new System.EventHandler(this.lastMeasureTypeRB_CheckedChanged);
             // 
             // selectedRB
             // 
@@ -567,39 +562,12 @@
             this.selectedRB.Text = "Only the selected ones";
             this.selectedRB.UseVisualStyleBackColor = true;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(370, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "label1";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(411, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "label2";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 23);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "label3";
-            // 
             // pictureBox1
             // 
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 133);
+            this.pictureBox1.Location = new System.Drawing.Point(3, 33);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(466, 194);
+            this.pictureBox1.Size = new System.Drawing.Size(466, 294);
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             // 
@@ -746,15 +714,12 @@
         private System.Windows.Forms.GroupBox groupBoxHistory;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.GroupBox groupBoxGraph;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.Label graphShowSelectorLabel;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.RadioButton lastMeasureTypeRB;
         private System.Windows.Forms.RadioButton selectedRB;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
