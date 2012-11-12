@@ -74,12 +74,6 @@ namespace MAS345_GUI
         }
 
         private Bitmap GraphBitmap;
-        const int GraphGrids = 10;
-        const int LeftMargin = 80;
-        const int RightMargin = 20;
-        const int TopMargin = 15;
-        const int BottomMargin = 15;
-        const int MeasurePointSize = 7;
 
         public MainForm()
         {
@@ -88,6 +82,10 @@ namespace MAS345_GUI
             mAS345dataBindingSource.DataSource = MeasureList;
 
             initGraph();
+            dateToolStripMenuItem.Checked = Properties.Settings.Default.GraphShowDate;
+            timeToolStripMenuItem.Checked = Properties.Settings.Default.GraphShowTime;
+            commentToolStripMenuItem.Checked = Properties.Settings.Default.GraphShowComment;
+            linesToolStripMenuItem1.Checked = Properties.Settings.Default.GraphShowLines;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -365,6 +363,18 @@ namespace MAS345_GUI
 
         private void drawGraph()
         {
+            int LeftMargin = Properties.Settings.Default.GraphLeftMargin;
+            int RightMargin = Properties.Settings.Default.GraphRightMargin;
+            int TopMargin = Properties.Settings.Default.GraphTopMargin;
+            int BottomMargin = Properties.Settings.Default.GraphBottomMargin;
+            int GraphGrids = Properties.Settings.Default.GraphNumberOfGrids;
+            int MeasurePointSize = Properties.Settings.Default.GraphMeasurePointSize;
+
+            bool ShowComment = Properties.Settings.Default.GraphShowComment;
+            bool ShowDate = Properties.Settings.Default.GraphShowDate;
+            bool ShowTime = Properties.Settings.Default.GraphShowTime;
+            bool ShowLines = Properties.Settings.Default.GraphShowLines;
+
             initGraph();
             Graphics gr = Graphics.FromImage(GraphBitmap);
 
@@ -411,18 +421,21 @@ namespace MAS345_GUI
             }
             double tempValueDomain = (GridMaxValue - GridMinValue);
 
-            int lastX = 0;
-            int lastY = 0;
-            for (int i = 0; i < MeasureOnGraph.Count; i++)
+            if (ShowLines)
             {
-                int tempX = (int)(LeftMargin + ((pictureBox1.Width - LeftMargin - RightMargin) * (i + 1) / (MeasureOnGraph.Count + 1)));
-                int tempY = (int)(TopMargin + ((pictureBox1.Height - TopMargin - BottomMargin) * (GridMaxValue - MeasureOnGraph[i].Value) / tempValueDomain));
-                if (lastX != 0 && lastY != 0)
+                int lastX = 0;
+                int lastY = 0;
+                for (int i = 0; i < MeasureOnGraph.Count; i++)
                 {
-                    gr.DrawLine(Pens.Blue, new Point(lastX, lastY), new Point(tempX, tempY));
+                    int tempX = (int)(LeftMargin + ((pictureBox1.Width - LeftMargin - RightMargin) * (i + 1) / (MeasureOnGraph.Count + 1)));
+                    int tempY = (int)(TopMargin + ((pictureBox1.Height - TopMargin - BottomMargin) * (GridMaxValue - MeasureOnGraph[i].Value) / tempValueDomain));
+                    if (lastX != 0 && lastY != 0)
+                    {
+                        gr.DrawLine(Pens.Blue, new Point(lastX, lastY), new Point(tempX, tempY));
+                    }
+                    lastX = tempX;
+                    lastY = tempY;
                 }
-                lastX = tempX;
-                lastY = tempY;
             }
             for (int i = 0; i < MeasureOnGraph.Count; i++)
             {
@@ -439,9 +452,24 @@ namespace MAS345_GUI
                 using (Font the_font = new Font("Courier New", 8, FontStyle.Bold, GraphicsUnit.Point))
                 {
                     string MeasureText = MeasureOnGraph[i].ValueWithUnit;
-                    if (MeasureOnGraph[i].ItemComment.Length > 0)
+                    if (((ShowComment && (MeasureOnGraph[i].ItemComment.Length > 0)) || ShowTime || ShowDate))
                     {
-                        MeasureText += " (" + MeasureOnGraph[i].ItemComment + ")";
+                        MeasureText += " (";
+                        if (ShowComment && (MeasureOnGraph[i].ItemComment.Length > 0))
+                        {
+                            MeasureText += MeasureOnGraph[i].ItemComment;
+                            if (ShowDate || ShowTime) MeasureText += ", ";
+                        }
+                        if (ShowDate)
+                        {
+                            MeasureText += MeasureOnGraph[i].Time.ToString("d");
+                            if (ShowTime) MeasureText += " ";
+                        }
+                        if (ShowTime)
+                        {
+                            MeasureText += MeasureOnGraph[i].Time.ToString("T");
+                        }
+                        MeasureText += ")";
                     }
                     gr.DrawString( MeasureText, the_font, Brushes.Blue, tempX + 5, tempY + 5);
                 }
@@ -514,9 +542,76 @@ namespace MAS345_GUI
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            drawGraph();
+            updateGraph();
         }
 
+        private void SettingsChanged()
+        {
+            updateGraph();
+            Properties.Settings.Default.Save();
+        }
+
+        private void linesToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.GraphShowLines)
+            {
+                Properties.Settings.Default.GraphShowLines = false;
+                linesToolStripMenuItem1.Checked = false;
+                MessageBox.Show("T->F " + linesToolStripMenuItem.Checked.ToString());
+            }
+            else
+            {
+                Properties.Settings.Default.GraphShowLines = true;
+                linesToolStripMenuItem1.Checked = true;
+                MessageBox.Show("F->T " + linesToolStripMenuItem.Checked.ToString());
+            }
+            SettingsChanged();
+        }
+
+        private void commentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.GraphShowComment)
+            {
+                Properties.Settings.Default.GraphShowComment = false;
+                commentToolStripMenuItem.Checked = false;
+            }
+            else
+            {
+                Properties.Settings.Default.GraphShowComment = true;
+                commentToolStripMenuItem.Checked = true;
+            }
+            SettingsChanged();
+        }
+
+        private void dateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.GraphShowDate)
+            {
+                Properties.Settings.Default.GraphShowDate = false;
+                dateToolStripMenuItem.Checked = false;
+            }
+            else
+            {
+                Properties.Settings.Default.GraphShowDate = true;
+                dateToolStripMenuItem.Checked = true;
+            }
+            SettingsChanged();
+        }
+
+        private void timeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.GraphShowTime)
+            {
+                Properties.Settings.Default.GraphShowTime = false;
+                timeToolStripMenuItem.Checked = false;
+            }
+            else
+            {
+                Properties.Settings.Default.GraphShowTime = true;
+                timeToolStripMenuItem.Checked = true;
+            }
+            SettingsChanged();
+        }
     }
 
     [Serializable()]
