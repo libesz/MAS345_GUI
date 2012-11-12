@@ -410,12 +410,24 @@ namespace MAS345_GUI
                 }
             }
             double tempValueDomain = (GridMaxValue - GridMinValue);
+
+            int lastX = 0;
+            int lastY = 0;
+            for (int i = 0; i < MeasureOnGraph.Count; i++)
+            {
+                int tempX = (int)(LeftMargin + ((pictureBox1.Width - LeftMargin - RightMargin) * (i + 1) / (MeasureOnGraph.Count + 1)));
+                int tempY = (int)(TopMargin + ((pictureBox1.Height - TopMargin - BottomMargin) * (GridMaxValue - MeasureOnGraph[i].Value) / tempValueDomain));
+                if (lastX != 0 && lastY != 0)
+                {
+                    gr.DrawLine(Pens.Blue, new Point(lastX, lastY), new Point(tempX, tempY));
+                }
+                lastX = tempX;
+                lastY = tempY;
+            }
             for (int i = 0; i < MeasureOnGraph.Count; i++)
             {
                 int tempX = (int)(LeftMargin + ((pictureBox1.Width - LeftMargin - RightMargin) * (i+1) / (MeasureOnGraph.Count+1))) - (MeasurePointSize/2);
                 int tempY = (int)(TopMargin + ((pictureBox1.Height - TopMargin - BottomMargin) * (GridMaxValue - MeasureOnGraph[i].Value) / tempValueDomain)) - (MeasurePointSize / 2);
-
-                //gr.DrawLine(Pens.Blue, new Point(tempX, 0), new Point(tempX, pictureBox1.Height));
 
                 using (SolidBrush MeasurePointBrush = new SolidBrush(MeasureOnGraph[i].ItemColor) )
                 {
@@ -504,6 +516,7 @@ namespace MAS345_GUI
         {
             drawGraph();
         }
+
     }
 
     [Serializable()]
