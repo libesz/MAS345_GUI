@@ -11,47 +11,5 @@
     <Setting Name="GraphShowTime" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="GraphNumberOfGrids" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
-    </Setting>
-    <Setting Name="GraphTopMargin" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">15</Value>
-    </Setting>
-    <Setting Name="GraphBottomMargin" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">15</Value>
-    </Setting>
-    <Setting Name="GraphLeftMargin" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">80</Value>
-    </Setting>
-    <Setting Name="GraphRightMargin" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">20</Value>
-    </Setting>
-    <Setting Name="GraphColorBG" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">Control</Value>
-    </Setting>
-    <Setting Name="GraphColotGraphBG" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">LightGray</Value>
-    </Setting>
-    <Setting Name="GraphColorGridLine" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">Gray</Value>
-    </Setting>
-    <Setting Name="GraphColorGridText" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">Blue</Value>
-    </Setting>
-    <Setting Name="GraphColorMeasurePointsOuter" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">Blue</Value>
-    </Setting>
-    <Setting Name="GraphColorMeasureText" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">Blue</Value>
-    </Setting>
-    <Setting Name="GraphColorLine" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">Blue</Value>
-    </Setting>
-    <Setting Name="GraphMeasurePointSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">7</Value>
-    </Setting>
-    <Setting Name="GraphShowLines" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
   </Settings>
 </SettingsFile>

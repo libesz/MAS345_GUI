@@ -33,6 +33,9 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.bigLabel = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -59,15 +62,6 @@
             this.commentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.linesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.numberOfGridsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.gridNumberTextBox = new System.Windows.Forms.ToolStripTextBox();
-            this.colorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.backgroundToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.gridsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.gridTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.measureTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.linesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.commonColorDialog1 = new System.Windows.Forms.ColorDialog();
             this.gridColorDialog1 = new System.Windows.Forms.ColorDialog();
@@ -85,11 +79,11 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBoxGraph = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.graphShowSelectorLabel = new System.Windows.Forms.Label();
             this.lastMeasureTypeRB = new System.Windows.Forms.RadioButton();
             this.selectedRB = new System.Windows.Forms.RadioButton();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBoxHistory = new System.Windows.Forms.GroupBox();
@@ -107,8 +101,8 @@
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBoxGraph.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.groupBoxHistory.SuspendLayout();
@@ -361,9 +355,7 @@
             // graphToolStripMenuItem
             // 
             this.graphToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showToolStripMenuItem,
-            this.numberOfGridsToolStripMenuItem,
-            this.colorsToolStripMenuItem});
+            this.showToolStripMenuItem});
             this.graphToolStripMenuItem.Name = "graphToolStripMenuItem";
             this.graphToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
             this.graphToolStripMenuItem.Text = "Graph";
@@ -373,96 +365,31 @@
             this.showToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.commentToolStripMenuItem,
             this.dateToolStripMenuItem,
-            this.timeToolStripMenuItem,
-            this.linesToolStripMenuItem1});
+            this.timeToolStripMenuItem});
             this.showToolStripMenuItem.Name = "showToolStripMenuItem";
-            this.showToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.showToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.showToolStripMenuItem.Text = "Show";
             // 
             // commentToolStripMenuItem
             // 
             this.commentToolStripMenuItem.Name = "commentToolStripMenuItem";
-            this.commentToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.commentToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.commentToolStripMenuItem.Text = "Comment";
             this.commentToolStripMenuItem.Click += new System.EventHandler(this.commentToolStripMenuItem_Click);
             // 
             // dateToolStripMenuItem
             // 
             this.dateToolStripMenuItem.Name = "dateToolStripMenuItem";
-            this.dateToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.dateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.dateToolStripMenuItem.Text = "Date";
             this.dateToolStripMenuItem.Click += new System.EventHandler(this.dateToolStripMenuItem_Click);
             // 
             // timeToolStripMenuItem
             // 
             this.timeToolStripMenuItem.Name = "timeToolStripMenuItem";
-            this.timeToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.timeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.timeToolStripMenuItem.Text = "Time";
             this.timeToolStripMenuItem.Click += new System.EventHandler(this.timeToolStripMenuItem_Click);
-            // 
-            // linesToolStripMenuItem1
-            // 
-            this.linesToolStripMenuItem1.Name = "linesToolStripMenuItem1";
-            this.linesToolStripMenuItem1.Size = new System.Drawing.Size(128, 22);
-            this.linesToolStripMenuItem1.Text = "Lines";
-            this.linesToolStripMenuItem1.Click += new System.EventHandler(this.linesToolStripMenuItem1_Click);
-            // 
-            // numberOfGridsToolStripMenuItem
-            // 
-            this.numberOfGridsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.gridNumberTextBox});
-            this.numberOfGridsToolStripMenuItem.Name = "numberOfGridsToolStripMenuItem";
-            this.numberOfGridsToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            this.numberOfGridsToolStripMenuItem.Text = "Number of grids";
-            this.numberOfGridsToolStripMenuItem.DropDownClosed += new System.EventHandler(this.numberOfGridsToolStripMenuItem_DropDownClosed);
-            // 
-            // gridNumberTextBox
-            // 
-            this.gridNumberTextBox.Name = "gridNumberTextBox";
-            this.gridNumberTextBox.Size = new System.Drawing.Size(100, 23);
-            this.gridNumberTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.gridNumberTextBox_KeyPress);
-            // 
-            // colorsToolStripMenuItem
-            // 
-            this.colorsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.backgroundToolStripMenuItem,
-            this.gridsToolStripMenuItem,
-            this.gridTextToolStripMenuItem,
-            this.measureTextToolStripMenuItem,
-            this.linesToolStripMenuItem});
-            this.colorsToolStripMenuItem.Name = "colorsToolStripMenuItem";
-            this.colorsToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            this.colorsToolStripMenuItem.Text = "Colors";
-            // 
-            // backgroundToolStripMenuItem
-            // 
-            this.backgroundToolStripMenuItem.Name = "backgroundToolStripMenuItem";
-            this.backgroundToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
-            this.backgroundToolStripMenuItem.Text = "Background";
-            // 
-            // gridsToolStripMenuItem
-            // 
-            this.gridsToolStripMenuItem.Name = "gridsToolStripMenuItem";
-            this.gridsToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
-            this.gridsToolStripMenuItem.Text = "Grids";
-            // 
-            // gridTextToolStripMenuItem
-            // 
-            this.gridTextToolStripMenuItem.Name = "gridTextToolStripMenuItem";
-            this.gridTextToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
-            this.gridTextToolStripMenuItem.Text = "Grid text";
-            // 
-            // measureTextToolStripMenuItem
-            // 
-            this.measureTextToolStripMenuItem.Name = "measureTextToolStripMenuItem";
-            this.measureTextToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
-            this.measureTextToolStripMenuItem.Text = "Measure text";
-            // 
-            // linesToolStripMenuItem
-            // 
-            this.linesToolStripMenuItem.Name = "linesToolStripMenuItem";
-            this.linesToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
-            this.linesToolStripMenuItem.Text = "Lines";
             // 
             // helpToolStripMenuItem
             // 
@@ -634,8 +561,8 @@
             // 
             this.tableLayoutPanel6.ColumnCount = 1;
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.Controls.Add(this.chart1, 0, 1);
             this.tableLayoutPanel6.Controls.Add(this.flowLayoutPanel1, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.pictureBox1, 0, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
@@ -644,6 +571,35 @@
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel6.Size = new System.Drawing.Size(472, 330);
             this.tableLayoutPanel6.TabIndex = 1;
+            // 
+            // chart1
+            // 
+            this.chart1.BackColor = System.Drawing.SystemColors.Control;
+            chartArea1.AxisX.LabelStyle.Enabled = false;
+            chartArea1.AxisX.MajorGrid.Enabled = false;
+            chartArea1.AxisX.MajorTickMark.Enabled = false;
+            chartArea1.AxisY.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
+            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.DarkGray;
+            chartArea1.AxisY.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
+            chartArea1.BackColor = System.Drawing.Color.LightGray;
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            this.chart1.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
+            this.chart1.Location = new System.Drawing.Point(3, 33);
+            this.chart1.Name = "chart1";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series1.IsVisibleInLegend = false;
+            series1.Legend = "Legend1";
+            series1.MarkerSize = 7;
+            series1.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series1.Name = "Series1";
+            this.chart1.Series.Add(series1);
+            this.chart1.Size = new System.Drawing.Size(466, 294);
+            this.chart1.TabIndex = 1;
+            this.chart1.Text = "chart1";
             // 
             // flowLayoutPanel1
             // 
@@ -690,15 +646,6 @@
             this.selectedRB.TabStop = true;
             this.selectedRB.Text = "Only the selected ones";
             this.selectedRB.UseVisualStyleBackColor = true;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 33);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(466, 294);
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
             // 
             // tableLayoutPanel5
             // 
@@ -788,9 +735,9 @@
             this.tableLayoutPanel2.ResumeLayout(false);
             this.groupBoxGraph.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.groupBoxHistory.ResumeLayout(false);
@@ -849,22 +796,13 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.RadioButton lastMeasureTypeRB;
         private System.Windows.Forms.RadioButton selectedRB;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ToolStripMenuItem graphToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem commentToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem timeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem numberOfGridsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripTextBox gridNumberTextBox;
-        private System.Windows.Forms.ToolStripMenuItem colorsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportGraphToImageToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem backgroundToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem gridsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem gridTextToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem measureTextToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem linesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem linesToolStripMenuItem1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
     }
 }
 

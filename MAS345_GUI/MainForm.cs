@@ -74,8 +74,6 @@ namespace MAS345_GUI
             }
         }
 
-        private Bitmap GraphBitmap;
-
         public MainForm()
         {
             InitializeComponent();
@@ -83,6 +81,7 @@ namespace MAS345_GUI
             mAS345dataBindingSource.DataSource = MeasureList;
 
             initGraph();
+            lastMeasureTypeRB.Checked = true;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -96,8 +95,6 @@ namespace MAS345_GUI
             dateToolStripMenuItem.Checked = Properties.Settings.Default.GraphShowDate;
             timeToolStripMenuItem.Checked = Properties.Settings.Default.GraphShowTime;
             commentToolStripMenuItem.Checked = Properties.Settings.Default.GraphShowComment;
-            linesToolStripMenuItem1.Checked = Properties.Settings.Default.GraphShowLines;
-            gridNumberTextBox.Text = Properties.Settings.Default.GraphNumberOfGrids.ToString();
         }
 
         private void ConnectButton_Click(object sender, EventArgs e)
@@ -369,130 +366,53 @@ namespace MAS345_GUI
 
         private void drawGraph()
         {
-            int LeftMargin = Properties.Settings.Default.GraphLeftMargin;
-            int RightMargin = Properties.Settings.Default.GraphRightMargin;
-            int TopMargin = Properties.Settings.Default.GraphTopMargin;
-            int BottomMargin = Properties.Settings.Default.GraphBottomMargin;
-            int GraphGrids = int.Parse(gridNumberTextBox.Text);
-            int MeasurePointSize = Properties.Settings.Default.GraphMeasurePointSize;
-
             bool ShowComment = Properties.Settings.Default.GraphShowComment;
             bool ShowDate = Properties.Settings.Default.GraphShowDate;
             bool ShowTime = Properties.Settings.Default.GraphShowTime;
-            bool ShowLines = Properties.Settings.Default.GraphShowLines;
 
-            initGraph();
-            Graphics gr = Graphics.FromImage(GraphBitmap);
-
-            //gray chart background
-            gr.FillRectangle(Brushes.LightGray, new Rectangle(LeftMargin, TopMargin, pictureBox1.Size.Width - LeftMargin - RightMargin, pictureBox1.Size.Height - TopMargin - BottomMargin));
-
-            //left margin
-            gr.DrawLine(Pens.Black, new Point(LeftMargin, TopMargin),
-                                    new Point(LeftMargin, (pictureBox1.Size.Height - BottomMargin)));
-            //right margin
-            gr.DrawLine(Pens.Black, new Point(pictureBox1.Size.Width - RightMargin, TopMargin),
-                                    new Point(pictureBox1.Size.Width - RightMargin, (pictureBox1.Size.Height - BottomMargin)));
-
-            //grids
-            for (int i = 0; i <= GraphGrids; i++)
-            {
-                using (Pen the_pen = new Pen(Color.Gray, 1))
-                {
-                    the_pen.DashStyle = DashStyle.Dash;
-                    gr.DrawLine(the_pen, new Point(LeftMargin, TopMargin + ((pictureBox1.Size.Height) - BottomMargin - TopMargin) * i / GraphGrids),
-                                         new Point(pictureBox1.Size.Width - RightMargin, TopMargin + ((pictureBox1.Size.Height) - BottomMargin - TopMargin) * i / GraphGrids));
-                }
-            }
-
-            double GridMaxValue = MeasureOnGraph.Max(obj => obj.Value) * 1.2;
-            if( GridMaxValue == 0 ) GridMaxValue += 0.1;
-            double GridMinValue = MeasureOnGraph.Min(obj => obj.Value) - ( MeasureOnGraph.Max(obj => obj.Value) * 0.2);
-
-            for (int i = 0; i <= GraphGrids; i++)
-            {
-                //grid values
-                using (Font the_font = new Font("Courier New", 8, FontStyle.Bold, GraphicsUnit.Point))
-                {
-                    string tempText = (((GridMaxValue - GridMinValue)
-                                      * (GraphGrids - i) / GraphGrids)
-                                      + GridMinValue).ToString("0.####");
-                    tempText +=  " " + MeasureOnGraph[0].Unit;
-
-                    SizeF TextSize = gr.MeasureString(tempText.ToString(), the_font);
-                    gr.DrawString(tempText.ToString(), the_font, Brushes.Blue,
-                                    LeftMargin - TextSize.Width,
-                                    (TopMargin + ((pictureBox1.Size.Height) - BottomMargin - TopMargin) * i / GraphGrids) - (TextSize.Height / 2));
-                }
-            }
-            double tempValueDomain = (GridMaxValue - GridMinValue);
-
-            if (ShowLines)
-            {
-                int lastX = 0;
-                int lastY = 0;
-                for (int i = 0; i < MeasureOnGraph.Count; i++)
-                {
-                    int tempX = (int)(LeftMargin + ((pictureBox1.Width - LeftMargin - RightMargin) * (i + 1) / (MeasureOnGraph.Count + 1)));
-                    int tempY = (int)(TopMargin + ((pictureBox1.Height - TopMargin - BottomMargin) * (GridMaxValue - MeasureOnGraph[i].Value) / tempValueDomain));
-                    if (lastX != 0 && lastY != 0)
-                    {
-                        gr.DrawLine(Pens.Blue, new Point(lastX, lastY), new Point(tempX, tempY));
-                    }
-                    lastX = tempX;
-                    lastY = tempY;
-                }
-            }
+            chart1.Titles.Clear();
+            chart1.Titles.Add(MeasureOnGraph[0].Type.ToString());
+            
+            Series series = chart1.Series[0];
+            series.Points.Clear();
+            
             for (int i = 0; i < MeasureOnGraph.Count; i++)
             {
-                int tempX = (int)(LeftMargin + ((pictureBox1.Width - LeftMargin - RightMargin) * (i+1) / (MeasureOnGraph.Count+1))) - (MeasurePointSize/2);
-                int tempY = (int)(TopMargin + ((pictureBox1.Height - TopMargin - BottomMargin) * (GridMaxValue - MeasureOnGraph[i].Value) / tempValueDomain)) - (MeasurePointSize / 2);
+                series.Points.Add(MeasureOnGraph[i].Value);
+                series.Points[series.Points.Count - 1].Color = MeasureOnGraph[i].ItemColor;
+                series.Points[series.Points.Count - 1].BorderColor = Color.Black;
 
-                using (SolidBrush MeasurePointBrush = new SolidBrush(MeasureOnGraph[i].ItemColor) )
+                string MeasureText = MeasureOnGraph[i].ValueWithUnit;
+                if (((ShowComment && (MeasureOnGraph[i].ItemComment.Length > 0)) || ShowTime || ShowDate))
                 {
-                    gr.FillEllipse(MeasurePointBrush, tempX, tempY, MeasurePointSize, MeasurePointSize);
-                }
-                
-                gr.DrawEllipse(Pens.Black, tempX, tempY, 6, MeasurePointSize);
-
-                using (Font the_font = new Font("Courier New", 8, FontStyle.Bold, GraphicsUnit.Point))
-                {
-                    string MeasureText = MeasureOnGraph[i].ValueWithUnit;
-                    if (((ShowComment && (MeasureOnGraph[i].ItemComment.Length > 0)) || ShowTime || ShowDate))
+                    MeasureText += " (";
+                    if (ShowComment && (MeasureOnGraph[i].ItemComment.Length > 0))
                     {
-                        MeasureText += " (";
-                        if (ShowComment && (MeasureOnGraph[i].ItemComment.Length > 0))
-                        {
-                            MeasureText += MeasureOnGraph[i].ItemComment;
-                            if (ShowDate || ShowTime) MeasureText += ", ";
-                        }
-                        if (ShowDate)
-                        {
-                            MeasureText += MeasureOnGraph[i].Time.ToString("d");
-                            if (ShowTime) MeasureText += " ";
-                        }
-                        if (ShowTime)
-                        {
-                            MeasureText += MeasureOnGraph[i].Time.ToString("T");
-                        }
-                        MeasureText += ")";
+                        MeasureText += MeasureOnGraph[i].ItemComment;
+                        if (ShowDate || ShowTime) MeasureText += ", ";
                     }
-                    gr.DrawString( MeasureText, the_font, Brushes.Blue, tempX + 5, tempY + 5);
+                    if (ShowDate)
+                    {
+                        MeasureText += MeasureOnGraph[i].Time.ToString("d");
+                        if (ShowTime) MeasureText += " ";
+                    }
+                    if (ShowTime)
+                    {
+                        MeasureText += MeasureOnGraph[i].Time.ToString("T");
+                    }
+                    MeasureText += ")";
                 }
+                series.Points[series.Points.Count - 1].Label = MeasureText;
+                series.Points[series.Points.Count - 1].ToolTip = MeasureOnGraph[i].Time.ToString("G"); ;
             }
-            gr.Dispose();
-            pictureBox1.Image = GraphBitmap;
+            chart1.Visible = true;
         }
 
         private void initGraph()
         {
-            GraphBitmap = new Bitmap(pictureBox1.Size.Width, pictureBox1.Size.Height);
-            Graphics gr = Graphics.FromImage(GraphBitmap);
-            //bright bg
-            gr.Clear(this.BackColor);
-
-            gr.Dispose();
-            pictureBox1.Image = GraphBitmap;
+            chart1.Titles.Clear();
+            chart1.Series[0].Points.Clear();
+            chart1.Visible = false;
         }
 
         private static int DataGridViewRowIndexCompare(DataGridViewRow x, DataGridViewRow y)
@@ -557,23 +477,6 @@ namespace MAS345_GUI
             Properties.Settings.Default.Save();
         }
 
-        private void linesToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            if (Properties.Settings.Default.GraphShowLines)
-            {
-                Properties.Settings.Default.GraphShowLines = false;
-                linesToolStripMenuItem1.Checked = false;
-                MessageBox.Show("T->F " + linesToolStripMenuItem.Checked.ToString());
-            }
-            else
-            {
-                Properties.Settings.Default.GraphShowLines = true;
-                linesToolStripMenuItem1.Checked = true;
-                MessageBox.Show("F->T " + linesToolStripMenuItem.Checked.ToString());
-            }
-            SettingsChanged();
-        }
-
         private void commentToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Properties.Settings.Default.GraphShowComment)
@@ -619,47 +522,6 @@ namespace MAS345_GUI
             SettingsChanged();
         }
 
-        private void gridNumberTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char keyChar;
-            keyChar = e.KeyChar;
-
-            if (!Char.IsDigit(keyChar))
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void numberOfGridsToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
-        {
-            bool Problem = false;
-            int Value = 0;
-            try
-            {
-                Value = int.Parse(gridNumberTextBox.Text);
-            }
-            catch
-            {
-                Problem = true;
-            }
-            if (!Problem)
-            {
-                if (!((Value >= 2) && (Value <= 100)))
-                {
-                    Problem = true;
-                }
-            }
-            if (Problem)
-            {
-                MessageBox.Show("Positive integer number only between 2 and 100!");
-                gridNumberTextBox.Text = Properties.Settings.Default.GraphNumberOfGrids.ToString();
-            }
-            else
-            {
-                Properties.Settings.Default.GraphNumberOfGrids = Value;
-                SettingsChanged();
-            }
-        }
     }
 
     [Serializable()]

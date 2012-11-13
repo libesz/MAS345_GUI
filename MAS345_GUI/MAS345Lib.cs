@@ -8,60 +8,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MAS345_GUI
 {
-    [Serializable()]
-    public class MeasureUnit
-    {
-        public DateTime Time { get; set; }
-        public MeasureType Type { get; set; }
-        public Double Value { get; set; }
-
-        public string Unit
-        {
-            get
-            {
-                string ReturnValue = "";
-                if ((Type == MeasureType.AcCurrent) || (Type == MeasureType.DcCurrent))
-                {
-                    ReturnValue = "A";
-                }
-                if ((Type == MeasureType.AcVoltage) || (Type == MeasureType.DcVoltage))
-                {
-                    ReturnValue = "V";
-                }
-                return ReturnValue;
-            }
-        }
-        public string ValueWithUnit
-        {
-            get
-            {
-                return Value + " " + Unit;
-            }
-        }
-
-        public MeasureUnit(DateTime Time, MeasureType Type, Double Value)
-        {
-            this.Time = Time;
-            this.Type = Type;
-            this.Value = Value;
-        }
-        public MeasureUnit(MeasureUnit TheOther): this(TheOther.Time, TheOther.Type, TheOther.Value ) {}
-        protected MeasureUnit() { }
-    }
-    public enum MeasureType
-    {
-        Unknown,
-        AcCurrent,
-        AcVoltage,
-        DcCurrent,
-        DcVoltage,
-        Resistance,
-        Diode,
-        Temperature,
-        Capacity,
-        hFe
-    };
-
     public class MasSerialPort : SerialPort
     {
 #if DEBUG
@@ -186,6 +132,60 @@ namespace MAS345_GUI
         }
     }
 
+    [Serializable()]
+    public class MeasureUnit
+    {
+        public DateTime Time { get; set; }
+        public MeasureType Type { get; set; }
+        public Double Value { get; set; }
+
+        public string Unit
+        {
+            get
+            {
+                string ReturnValue = "";
+                if ((Type == MeasureType.AcCurrent) || (Type == MeasureType.DcCurrent))
+                {
+                    ReturnValue = "A";
+                }
+                if ((Type == MeasureType.AcVoltage) || (Type == MeasureType.DcVoltage))
+                {
+                    ReturnValue = "V";
+                }
+                return ReturnValue;
+            }
+        }
+        public string ValueWithUnit
+        {
+            get
+            {
+                return Value + " " + Unit;
+            }
+        }
+
+        public MeasureUnit(DateTime Time, MeasureType Type, Double Value)
+        {
+            this.Time = Time;
+            this.Type = Type;
+            this.Value = Value;
+        }
+        public MeasureUnit(MeasureUnit TheOther): this(TheOther.Time, TheOther.Type, TheOther.Value ) {}
+        protected MeasureUnit() { }
+    }
+    public enum MeasureType
+    {
+        Unknown,
+        AcCurrent,
+        AcVoltage,
+        DcCurrent,
+        DcVoltage,
+        Resistance,
+        Diode,
+        Temperature,
+        Capacity,
+        hFe
+    };
+
 #if DEBUG
     class MasEmulator
     {
@@ -197,8 +197,12 @@ namespace MAS345_GUI
 
         public MeasureUnit GiveNextMeasure()
         {
+            Random rand = new Random();
             _LastMeasure.Time = DateTime.Now;
-            _LastMeasure.Value++;
+            _LastMeasure.Value = rand.Next(200000);
+            _LastMeasure.Value /= 1000;
+            _LastMeasure.Value -= 100;
+            /*_LastMeasure.Value++;
             if (_LastMeasure.Value == 10.0)
             {
                 if (_LastMeasure.Type == MeasureType.DcVoltage)
@@ -210,7 +214,7 @@ namespace MAS345_GUI
                     _LastMeasure.Type = MeasureType.DcVoltage;
                 }
                 _LastMeasure.Value = 0.0;
-            }
+            }*/
             return new MeasureUnit(_LastMeasure);
         }
     }
