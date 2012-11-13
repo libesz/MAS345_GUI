@@ -82,15 +82,21 @@ namespace MAS345_GUI
             mAS345dataBindingSource.DataSource = MeasureList;
 
             initGraph();
-            dateToolStripMenuItem.Checked = Properties.Settings.Default.GraphShowDate;
-            timeToolStripMenuItem.Checked = Properties.Settings.Default.GraphShowTime;
-            commentToolStripMenuItem.Checked = Properties.Settings.Default.GraphShowComment;
-            linesToolStripMenuItem1.Checked = Properties.Settings.Default.GraphShowLines;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            LoadSettings();
             this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.ResizeRedraw, true);
+        }
+
+        private void LoadSettings()
+        {
+            dateToolStripMenuItem.Checked = Properties.Settings.Default.GraphShowDate;
+            timeToolStripMenuItem.Checked = Properties.Settings.Default.GraphShowTime;
+            commentToolStripMenuItem.Checked = Properties.Settings.Default.GraphShowComment;
+            linesToolStripMenuItem1.Checked = Properties.Settings.Default.GraphShowLines;
+            gridNumberTextBox.Text = Properties.Settings.Default.GraphNumberOfGrids.ToString();
         }
 
         private void ConnectButton_Click(object sender, EventArgs e)
@@ -317,7 +323,6 @@ namespace MAS345_GUI
                         }
                     );
                     MeasureStarted++;
-                    //MessageBox.Show((MeasureList.Count - MeasureStarted).ToString());
                     MeasureOnGraph = MeasureList.GetRange(MeasureStarted, MeasureList.Count - MeasureStarted);
                 }
                 else
@@ -367,7 +372,7 @@ namespace MAS345_GUI
             int RightMargin = Properties.Settings.Default.GraphRightMargin;
             int TopMargin = Properties.Settings.Default.GraphTopMargin;
             int BottomMargin = Properties.Settings.Default.GraphBottomMargin;
-            int GraphGrids = Properties.Settings.Default.GraphNumberOfGrids;
+            int GraphGrids = int.Parse(gridNumberTextBox.Text);
             int MeasurePointSize = Properties.Settings.Default.GraphMeasurePointSize;
 
             bool ShowComment = Properties.Settings.Default.GraphShowComment;
@@ -611,6 +616,48 @@ namespace MAS345_GUI
                 timeToolStripMenuItem.Checked = true;
             }
             SettingsChanged();
+        }
+
+        private void gridNumberTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char keyChar;
+            keyChar = e.KeyChar;
+
+            if (!Char.IsDigit(keyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void numberOfGridsToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
+        {
+            bool Problem = false;
+            int Value = 0;
+            try
+            {
+                Value = int.Parse(gridNumberTextBox.Text);
+            }
+            catch
+            {
+                Problem = true;
+            }
+            if (!Problem)
+            {
+                if (!((Value >= 2) && (Value <= 100)))
+                {
+                    Problem = true;
+                }
+            }
+            if (Problem)
+            {
+                MessageBox.Show("Positive integer number only between 2 and 100!");
+                gridNumberTextBox.Text = Properties.Settings.Default.GraphNumberOfGrids.ToString();
+            }
+            else
+            {
+                Properties.Settings.Default.GraphNumberOfGrids = Value;
+                SettingsChanged();
+            }
         }
     }
 

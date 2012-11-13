@@ -93,12 +93,12 @@ namespace MAS345_GUI
 
         public MeasureUnit ReadData()
         {
-            MeasureUnit ReturnValue;
+            MeasureUnit ReturnValue = new MeasureUnit(DateTime.Now, MeasureType.DcCurrent, 1.0);
 #if DEBUG
             Thread.Sleep(1000);
             ReturnValue = Emulator.GiveNextMeasure();
 #else
-            System.Text.Encoding enc = System.Text.Encoding.ASCII;
+            /*System.Text.Encoding enc = System.Text.Encoding.ASCII;
             byte[] input_data = new byte[14];
             String input_string = "";
 
@@ -180,7 +180,7 @@ namespace MAS345_GUI
 
                 decodedData.unit = decodedData.unit.TrimStart();
                 decodedData.value += input_string.Substring(4, 5);
-
+            */
 #endif
             return ReturnValue;
         }
