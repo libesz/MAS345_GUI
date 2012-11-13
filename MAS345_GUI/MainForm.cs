@@ -11,6 +11,7 @@ using System.IO.Ports;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace MAS345_GUI
 {
