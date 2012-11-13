@@ -204,14 +204,6 @@ namespace MAS345_GUI
             Started = false;
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (serialPort1.IsOpen)
-            {
-                serialPort1.Close();
-            }
-        }
-
         private void colorSelectorPanel_Click(object sender, EventArgs e)
         {
             commonColorDialog1.ShowDialog();
@@ -256,39 +248,12 @@ namespace MAS345_GUI
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
-            {
-                using (Stream stream = File.Open("data.bin", FileMode.Create))
-                {
-                    BinaryFormatter bin = new BinaryFormatter();
-                    bin.Serialize(stream, MeasureList);
-                }
-            }
-            catch (IOException)
-            {
-            }
+            saveMeasureListDialog.ShowDialog();
         }
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
-            {
-                using (Stream stream = File.Open("data.bin", FileMode.Open))
-                {
-                    BinaryFormatter bin = new BinaryFormatter();
-                    MeasureList = (List<MeasureListItem>)bin.Deserialize(stream);
-
-                    mAS345dataBindingSource.DataSource = MeasureList;
-                    foreach (DataGridViewRow ActualRow in dataGridView1.Rows)
-                    {
-                        ActualRow.DefaultCellStyle.BackColor = (ActualRow.DataBoundItem as MeasureListItem).ItemColor;
-                        ActualRow.DefaultCellStyle.SelectionBackColor = GetBrighterColor(ActualRow.DefaultCellStyle.BackColor);
-                    }
-                }
-            }
-            catch (IOException)
-            {
-            }
+            openMeasureListDialog.ShowDialog();
         }
 
         private void mAS345dataBindingSource_ListChanged(object sender, ListChangedEventArgs e)
@@ -370,10 +335,10 @@ namespace MAS345_GUI
             bool ShowDate = Properties.Settings.Default.GraphShowDate;
             bool ShowTime = Properties.Settings.Default.GraphShowTime;
 
-            chart1.Titles.Clear();
-            chart1.Titles.Add(MeasureOnGraph[0].Type.ToString());
+            measureChart.Titles.Clear();
+            measureChart.Titles.Add("Measurement: " + MeasureOnGraph[0].Type.ToString() + " [" + MeasureOnGraph[0].Unit + "]");
             
-            Series series = chart1.Series[0];
+            Series series = measureChart.Series[0];
             series.Points.Clear();
             
             for (int i = 0; i < MeasureOnGraph.Count; i++)
@@ -405,14 +370,16 @@ namespace MAS345_GUI
                 series.Points[series.Points.Count - 1].Label = MeasureText;
                 series.Points[series.Points.Count - 1].ToolTip = MeasureOnGraph[i].Time.ToString("G"); ;
             }
-            chart1.Visible = true;
+            measureChart.Visible = true;
+            exportGraphToImageToolStripMenuItem.Enabled = true;
         }
 
         private void initGraph()
         {
-            chart1.Titles.Clear();
-            chart1.Series[0].Points.Clear();
-            chart1.Visible = false;
+            measureChart.Titles.Clear();
+            measureChart.Series[0].Points.Clear();
+            exportGraphToImageToolStripMenuItem.Enabled = false;
+            measureChart.Visible = false;
         }
 
         private static int DataGridViewRowIndexCompare(DataGridViewRow x, DataGridViewRow y)
@@ -522,6 +489,101 @@ namespace MAS345_GUI
             SettingsChanged();
         }
 
+        private void exportGraphToImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveChartDialog.ShowDialog();
+        }
+
+        private void saveMeasureListDialog_FileOk(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                using (Stream stream = File.Open(saveMeasureListDialog.FileName, FileMode.Create))
+                {
+                    BinaryFormatter bin = new BinaryFormatter();
+                    bin.Serialize(stream, MeasureList);
+                }
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("Save error!");
+            }
+        }
+
+        private void saveChartDialog_FileOk(object sender, CancelEventArgs e)
+        {
+            string a = Path.GetExtension(saveChartDialog.FileName);
+            ChartImageFormat ImageFormat = ChartImageFormat.Png;
+            switch (Path.GetExtension(saveChartDialog.FileName))
+            {
+                case ".png":
+                    ImageFormat = ChartImageFormat.Png;
+                    break;
+                case ".jpg":
+                    ImageFormat = ChartImageFormat.Jpeg;
+                    break;
+                case ".bmp":
+                    ImageFormat = ChartImageFormat.Bmp;
+                    break;
+                case ".gif":
+                    ImageFormat = ChartImageFormat.Gif;
+                    break;
+            }
+            measureChart.SaveImage(saveChartDialog.FileName, ImageFormat);
+        }
+
+        private void openMeasureListDialog_FileOk(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                using (Stream stream = File.Open(openMeasureListDialog.FileName, FileMode.Open))
+                {
+                    BinaryFormatter bin = new BinaryFormatter();
+                    MeasureList = (List<MeasureListItem>)bin.Deserialize(stream);
+
+                    mAS345dataBindingSource.DataSource = MeasureList;
+                    foreach (DataGridViewRow ActualRow in dataGridView1.Rows)
+                    {
+                        ActualRow.DefaultCellStyle.BackColor = (ActualRow.DataBoundItem as MeasureListItem).ItemColor;
+                        ActualRow.DefaultCellStyle.SelectionBackColor = GetBrighterColor(ActualRow.DefaultCellStyle.BackColor);
+                    }
+                }
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("Load error!");
+            }
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool Answer = AreYouSureBox.ShowDialog("Are You sure? All unsaved measure will be lost!");
+            if (Answer)
+            {
+                mAS345dataBindingSource.Clear();
+            }
+        }
+
+        private void exit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            bool Answer = AreYouSureBox.ShowDialog("Are You sure? All unsaved measure will be lost!");
+            if (Answer)
+            {
+                if (serialPort1.IsOpen)
+                {
+                    serialPort1.Close();
+                }
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+        }
     }
 
     [Serializable()]

@@ -53,18 +53,17 @@
             this.modeLabel = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportGraphToImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.graphToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.commentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.commonColorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.gridColorDialog1 = new System.Windows.Forms.ColorDialog();
             this.groupBoxControl = new System.Windows.Forms.GroupBox();
             this.startButton = new System.Windows.Forms.Button();
             this.contCheckBox = new System.Windows.Forms.CheckBox();
@@ -79,7 +78,7 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBoxGraph = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.measureChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.graphShowSelectorLabel = new System.Windows.Forms.Label();
             this.lastMeasureTypeRB = new System.Windows.Forms.RadioButton();
@@ -88,6 +87,10 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBoxHistory = new System.Windows.Forms.GroupBox();
             this.groupBoxDefaults = new System.Windows.Forms.GroupBox();
+            this.gridColorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.openMeasureListDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveMeasureListDialog = new System.Windows.Forms.SaveFileDialog();
+            this.saveChartDialog = new System.Windows.Forms.SaveFileDialog();
             this.serialPort1 = new MAS345_GUI.MasSerialPort();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -101,7 +104,7 @@
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBoxGraph.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.measureChart)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -318,6 +321,7 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newToolStripMenuItem,
             this.loadToolStripMenuItem,
             this.saveToolStripMenuItem,
             this.exportGraphToImageToolStripMenuItem,
@@ -325,6 +329,13 @@
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
+            // 
+            // newToolStripMenuItem
+            // 
+            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.newToolStripMenuItem.Text = "New";
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // loadToolStripMenuItem
             // 
@@ -345,49 +356,43 @@
             this.exportGraphToImageToolStripMenuItem.Name = "exportGraphToImageToolStripMenuItem";
             this.exportGraphToImageToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.exportGraphToImageToolStripMenuItem.Text = "Export Graph to Image";
+            this.exportGraphToImageToolStripMenuItem.Click += new System.EventHandler(this.exportGraphToImageToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exit_Click);
             // 
             // graphToolStripMenuItem
             // 
             this.graphToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showToolStripMenuItem});
+            this.commentToolStripMenuItem,
+            this.dateToolStripMenuItem,
+            this.timeToolStripMenuItem});
             this.graphToolStripMenuItem.Name = "graphToolStripMenuItem";
             this.graphToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
             this.graphToolStripMenuItem.Text = "Graph";
             // 
-            // showToolStripMenuItem
-            // 
-            this.showToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.commentToolStripMenuItem,
-            this.dateToolStripMenuItem,
-            this.timeToolStripMenuItem});
-            this.showToolStripMenuItem.Name = "showToolStripMenuItem";
-            this.showToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.showToolStripMenuItem.Text = "Show";
-            // 
             // commentToolStripMenuItem
             // 
             this.commentToolStripMenuItem.Name = "commentToolStripMenuItem";
-            this.commentToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.commentToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.commentToolStripMenuItem.Text = "Comment";
             this.commentToolStripMenuItem.Click += new System.EventHandler(this.commentToolStripMenuItem_Click);
             // 
             // dateToolStripMenuItem
             // 
             this.dateToolStripMenuItem.Name = "dateToolStripMenuItem";
-            this.dateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.dateToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.dateToolStripMenuItem.Text = "Date";
             this.dateToolStripMenuItem.Click += new System.EventHandler(this.dateToolStripMenuItem_Click);
             // 
             // timeToolStripMenuItem
             // 
             this.timeToolStripMenuItem.Name = "timeToolStripMenuItem";
-            this.timeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.timeToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.timeToolStripMenuItem.Text = "Time";
             this.timeToolStripMenuItem.Click += new System.EventHandler(this.timeToolStripMenuItem_Click);
             // 
@@ -400,10 +405,6 @@
             // commonColorDialog1
             // 
             this.commonColorDialog1.Color = System.Drawing.Color.White;
-            // 
-            // gridColorDialog1
-            // 
-            this.gridColorDialog1.Color = System.Drawing.Color.White;
             // 
             // groupBoxControl
             // 
@@ -481,15 +482,15 @@
             // 
             // commentTextBox
             // 
-            this.commentTextBox.Location = new System.Drawing.Point(67, 19);
+            this.commentTextBox.Location = new System.Drawing.Point(231, 19);
             this.commentTextBox.Name = "commentTextBox";
-            this.commentTextBox.Size = new System.Drawing.Size(100, 20);
+            this.commentTextBox.Size = new System.Drawing.Size(150, 20);
             this.commentTextBox.TabIndex = 7;
             // 
             // commentLabel
             // 
             this.commentLabel.AutoSize = true;
-            this.commentLabel.Location = new System.Drawing.Point(13, 24);
+            this.commentLabel.Location = new System.Drawing.Point(177, 24);
             this.commentLabel.Name = "commentLabel";
             this.commentLabel.Size = new System.Drawing.Size(51, 13);
             this.commentLabel.TabIndex = 8;
@@ -498,7 +499,7 @@
             // colorLabel
             // 
             this.colorLabel.AutoSize = true;
-            this.colorLabel.Location = new System.Drawing.Point(216, 24);
+            this.colorLabel.Location = new System.Drawing.Point(27, 24);
             this.colorLabel.Name = "colorLabel";
             this.colorLabel.Size = new System.Drawing.Size(31, 13);
             this.colorLabel.TabIndex = 9;
@@ -508,7 +509,7 @@
             // 
             this.colorSelectorPanel.BackColor = System.Drawing.Color.White;
             this.colorSelectorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.colorSelectorPanel.Location = new System.Drawing.Point(254, 19);
+            this.colorSelectorPanel.Location = new System.Drawing.Point(65, 19);
             this.colorSelectorPanel.Name = "colorSelectorPanel";
             this.colorSelectorPanel.Size = new System.Drawing.Size(96, 26);
             this.colorSelectorPanel.TabIndex = 10;
@@ -561,7 +562,7 @@
             // 
             this.tableLayoutPanel6.ColumnCount = 1;
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Controls.Add(this.chart1, 0, 1);
+            this.tableLayoutPanel6.Controls.Add(this.measureChart, 0, 1);
             this.tableLayoutPanel6.Controls.Add(this.flowLayoutPanel1, 0, 0);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 16);
@@ -572,9 +573,9 @@
             this.tableLayoutPanel6.Size = new System.Drawing.Size(472, 330);
             this.tableLayoutPanel6.TabIndex = 1;
             // 
-            // chart1
+            // measureChart
             // 
-            this.chart1.BackColor = System.Drawing.SystemColors.Control;
+            this.measureChart.BackColor = System.Drawing.SystemColors.Control;
             chartArea1.AxisX.LabelStyle.Enabled = false;
             chartArea1.AxisX.MajorGrid.Enabled = false;
             chartArea1.AxisX.MajorTickMark.Enabled = false;
@@ -583,12 +584,12 @@
             chartArea1.AxisY.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
             chartArea1.BackColor = System.Drawing.Color.LightGray;
             chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            this.chart1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.measureChart.ChartAreas.Add(chartArea1);
+            this.measureChart.Dock = System.Windows.Forms.DockStyle.Fill;
             legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(3, 33);
-            this.chart1.Name = "chart1";
+            this.measureChart.Legends.Add(legend1);
+            this.measureChart.Location = new System.Drawing.Point(3, 33);
+            this.measureChart.Name = "measureChart";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
             series1.IsVisibleInLegend = false;
@@ -596,10 +597,10 @@
             series1.MarkerSize = 7;
             series1.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
             series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(466, 294);
-            this.chart1.TabIndex = 1;
-            this.chart1.Text = "chart1";
+            this.measureChart.Series.Add(series1);
+            this.measureChart.Size = new System.Drawing.Size(466, 294);
+            this.measureChart.TabIndex = 1;
+            this.measureChart.Text = "chart1";
             // 
             // flowLayoutPanel1
             // 
@@ -704,6 +705,29 @@
             this.groupBoxDefaults.TabStop = false;
             this.groupBoxDefaults.Text = "Defaults";
             // 
+            // gridColorDialog1
+            // 
+            this.gridColorDialog1.Color = System.Drawing.Color.White;
+            // 
+            // openMeasureListDialog
+            // 
+            this.openMeasureListDialog.DefaultExt = "mas345";
+            this.openMeasureListDialog.FileName = "openFileDialog1";
+            this.openMeasureListDialog.Filter = "MAS345 binary logs|*.mas345|All Files|*.*";
+            this.openMeasureListDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openMeasureListDialog_FileOk);
+            // 
+            // saveMeasureListDialog
+            // 
+            this.saveMeasureListDialog.DefaultExt = "mas345";
+            this.saveMeasureListDialog.Filter = "MAS345 binary logs|*.mas345|All Files|*.*";
+            this.saveMeasureListDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveMeasureListDialog_FileOk);
+            // 
+            // saveChartDialog
+            // 
+            this.saveChartDialog.DefaultExt = "png";
+            this.saveChartDialog.Filter = ".png|*.png|.jpg|*.jpg|.gif|*.gif|.bmp|*.bmp|All files|*.*";
+            this.saveChartDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveChartDialog_FileOk);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -717,7 +741,7 @@
             this.Name = "MainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "MAS345 GUI";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.statusStrip1.ResumeLayout(false);
@@ -735,7 +759,7 @@
             this.tableLayoutPanel2.ResumeLayout(false);
             this.groupBoxGraph.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.measureChart)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
@@ -764,7 +788,6 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private MasSerialPort serialPort1;
         private System.Windows.Forms.ColorDialog commonColorDialog1;
-        private System.Windows.Forms.ColorDialog gridColorDialog1;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn Time;
@@ -797,12 +820,16 @@
         private System.Windows.Forms.RadioButton lastMeasureTypeRB;
         private System.Windows.Forms.RadioButton selectedRB;
         private System.Windows.Forms.ToolStripMenuItem graphToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportGraphToImageToolStripMenuItem;
+        private System.Windows.Forms.DataVisualization.Charting.Chart measureChart;
         private System.Windows.Forms.ToolStripMenuItem commentToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem timeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exportGraphToImageToolStripMenuItem;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.ColorDialog gridColorDialog1;
+        private System.Windows.Forms.OpenFileDialog openMeasureListDialog;
+        private System.Windows.Forms.SaveFileDialog saveMeasureListDialog;
+        private System.Windows.Forms.SaveFileDialog saveChartDialog;
+        private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
     }
 }
 
