@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.IO.Ports;
 using System.Threading;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows.Forms;
 
 namespace MAS345_GUI
 {
@@ -44,89 +46,94 @@ namespace MAS345_GUI
             Thread.Sleep(1000);
             ReturnValue = Emulator.GiveNextMeasure();
 #else
-            /*System.Text.Encoding enc = System.Text.Encoding.ASCII;
+            double ValueMultiplier = 1;
+            System.Text.Encoding enc = System.Text.Encoding.ASCII;
             byte[] input_data = new byte[14];
             String input_string = "";
 
-            SerialPort port = e.Argument as SerialPort;
-            while (true)
+            WriteLine(""); //Send the empty line to the device
+            
+            Thread.Sleep(1000);
+            Read(input_data, 0, 14);
+
+            input_string = enc.GetString(input_data).Trim();
+
+            switch (input_string.Substring(9, 4).TrimStart())
             {
-                if (backgroundWorker1.CancellationPending) { e.Cancel = true; return; }
-                try
-                {
-                    port.RtsEnable = false;
-                    port.DtrEnable = true;
-                    port.WriteLine("");
-                    Thread.Sleep(1000);
-                    port.Read(input_data, 0, 14);
-
-                    input_string = enc.GetString(input_data);
-
-                    backgroundWorker1.ReportProgress(1, input_string);
-                }
-                catch
-                {
-                    backgroundWorker1.ReportProgress(2, "Can't recieve data from " + serialPort1.PortName);
-                }
+                case "mV":
+                    ValueMultiplier = 0.001;
+                    break;
+                case "mA":
+                    ValueMultiplier = 0.001;
+                    break;
+                case "KOhm":
+                    ValueMultiplier = 1000;
+                    break;
+                case "MOhm":
+                    ValueMultiplier = 1000 * 1000;
+                    break;
             }
-                String input_string = e.UserState as String;
-                MAS345_data decodedData = new MAS345_data();
 
-                decodedData.time = DateTime.Now.ToString();
+            if (input_string.Substring(3, 1).Equals("-"))
+            {
+                ValueMultiplier *= -1;
+            }
 
-                decodedData.unit = input_string.Substring(9, 4);
+            ReturnValue.Time = DateTime.Now;
+            //MessageBox.Show("'" + input_string.Substring(9, 4) + "'");
+            /*ReturnValue.Unit = input_string.Substring(9, 4);*/
 
-                if(input_string.Substring(0, 2).Equals("AC"))
-                {
-                    if (decodedData.unit.Substring(3, 1).Equals("A"))
+            switch(input_string.Substring(0, 2))
+            {
+                case "AC":
+                    if (input_string[input_string.Length -1].Equals('A'))
                     {
-                        decodedData.measureType = "AC Current";
+                        ReturnValue.Type = MeasureType.AcCurrent;
                     }
                     else
                     {
-                        decodedData.measureType = "AC Voltage";
+                        ReturnValue.Type = MeasureType.AcVoltage;
                     }
-                }
-                else if (input_string.Substring(0, 2).Equals("DC"))
-                {
-                    if (decodedData.unit.Substring(3, 1).Equals("A"))
+                    break;
+                case "DC":
+                    if (input_string[input_string.Length - 1].Equals('A'))
                     {
-                        decodedData.measureType = "DC Current";
+                        ReturnValue.Type = MeasureType.DcCurrent;
                     }
                     else
                     {
-                        decodedData.measureType = "DC Voltage";
+                        ReturnValue.Type = MeasureType.DcVoltage;
                     }
-                }
-                else if (input_string.Substring(0, 2).Equals("OH"))
-                {
-                    decodedData.measureType = "Resistance";
-                }
-                else if (input_string.Substring(0, 2).Equals("DI"))
-                {
-                    decodedData.measureType = "Diode";
-                }
-                else if (input_string.Substring(0, 2).Equals("TE"))
-                {
-                    decodedData.measureType = "Temperature";
-                }
-                else if (input_string.Substring(0, 2).Equals("CA"))
-                {
-                    decodedData.measureType = "Capacity";
-                }
-                else
-                {
-                    decodedData.measureType = "hFE";
-                }
+                    break;
+                case "OH":
+                    ReturnValue.Type = MeasureType.Resistance;
+                    break;
+                case "DI":
+                    ReturnValue.Type = MeasureType.Diode;
+                    break;
+                case "TE":
+                    ReturnValue.Type = MeasureType.Temperature;
+                    break;
+                case "CA":
+                    ReturnValue.Type = MeasureType.Capacity;
+                    break;
+                default:
+                    ReturnValue.Type = MeasureType.hFe;
+                    break;
+            }
 
-                if (input_string.Substring(3, 1).Equals("-"))
-                {
-                    decodedData.value = "-";
-                }
-
-                decodedData.unit = decodedData.unit.TrimStart();
-                decodedData.value += input_string.Substring(4, 5);
-            */
+            try
+            {
+                ReturnValue.Value = double.Parse(input_string.Substring(4, 5).Trim(),
+                                                 System.Globalization.NumberStyles.AllowDecimalPoint,
+                                                 System.Globalization.NumberFormatInfo.InvariantInfo);
+            }
+            catch
+            {
+                throw (new InvalidDataException());
+            }
+            ReturnValue.Value *= ValueMultiplier;
+                 
 #endif
             return ReturnValue;
         }
@@ -148,9 +155,21 @@ namespace MAS345_GUI
                 {
                     ReturnValue = "A";
                 }
-                if ((Type == MeasureType.AcVoltage) || (Type == MeasureType.DcVoltage))
+                if ((Type == MeasureType.AcVoltage) || (Type == MeasureType.DcVoltage) || (Type == MeasureType.Diode))
                 {
                     ReturnValue = "V";
+                }
+                if (Type == MeasureType.Temperature)
+                {
+                    ReturnValue = "˚C";
+                }
+                if (Type == MeasureType.Capacity)
+                {
+                    ReturnValue = "nF";
+                }
+                if (Type == MeasureType.Resistance)
+                {
+                    ReturnValue = "Ω";
                 }
                 return ReturnValue;
             }
@@ -159,7 +178,16 @@ namespace MAS345_GUI
         {
             get
             {
-                return Value + " " + Unit;
+                string ReturnValue = "";
+                if ((Value != 0) && ((Value % 1000) == 0))
+                {
+                    ReturnValue = (Value / 1000).ToString() + " k" + Unit;
+                }
+                else
+                {
+                    ReturnValue = Value.ToString() + " " + Unit;
+                }
+                return ReturnValue;
             }
         }
 

@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.bigLabel = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -90,8 +90,11 @@
             this.gridColorDialog1 = new System.Windows.Forms.ColorDialog();
             this.openMeasureListDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveMeasureListDialog = new System.Windows.Forms.SaveFileDialog();
-            this.saveChartDialog = new System.Windows.Forms.SaveFileDialog();
+            this.exportGraphDialog = new System.Windows.Forms.SaveFileDialog();
+            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.clearHistoryButton = new System.Windows.Forms.Button();
             this.serialPort1 = new MAS345_GUI.MasSerialPort();
+            this.exportHistoryToExcelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mAS345dataBindingSource)).BeginInit();
@@ -110,6 +113,7 @@
             this.tableLayoutPanel3.SuspendLayout();
             this.groupBoxHistory.SuspendLayout();
             this.groupBoxDefaults.SuspendLayout();
+            this.tableLayoutPanel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // bigLabel
@@ -158,14 +162,14 @@
             this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Time,
@@ -175,26 +179,26 @@
             this.Delete,
             this.ChangeColor});
             this.dataGridView1.DataSource = this.mAS345dataBindingSource;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle11;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dataGridView1.Location = new System.Drawing.Point(3, 16);
             this.dataGridView1.Name = "dataGridView1";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowTemplate.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
             this.dataGridView1.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
@@ -210,9 +214,9 @@
             // 
             this.Time.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.Time.DataPropertyName = "Time";
-            dataGridViewCellStyle2.Format = "G";
-            dataGridViewCellStyle2.NullValue = null;
-            this.Time.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle10.Format = "G";
+            dataGridViewCellStyle10.NullValue = null;
+            this.Time.DefaultCellStyle = dataGridViewCellStyle10;
             this.Time.HeaderText = "Time";
             this.Time.Name = "Time";
             this.Time.ReadOnly = true;
@@ -324,6 +328,7 @@
             this.newToolStripMenuItem,
             this.loadToolStripMenuItem,
             this.saveToolStripMenuItem,
+            this.exportHistoryToExcelToolStripMenuItem,
             this.exportGraphToImageToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -482,7 +487,7 @@
             // 
             // commentTextBox
             // 
-            this.commentTextBox.Location = new System.Drawing.Point(231, 19);
+            this.commentTextBox.Location = new System.Drawing.Point(212, 19);
             this.commentTextBox.Name = "commentTextBox";
             this.commentTextBox.Size = new System.Drawing.Size(150, 20);
             this.commentTextBox.TabIndex = 7;
@@ -490,7 +495,7 @@
             // commentLabel
             // 
             this.commentLabel.AutoSize = true;
-            this.commentLabel.Location = new System.Drawing.Point(177, 24);
+            this.commentLabel.Location = new System.Drawing.Point(158, 24);
             this.commentLabel.Name = "commentLabel";
             this.commentLabel.Size = new System.Drawing.Size(51, 13);
             this.commentLabel.TabIndex = 8;
@@ -499,7 +504,7 @@
             // colorLabel
             // 
             this.colorLabel.AutoSize = true;
-            this.colorLabel.Location = new System.Drawing.Point(27, 24);
+            this.colorLabel.Location = new System.Drawing.Point(17, 24);
             this.colorLabel.Name = "colorLabel";
             this.colorLabel.Size = new System.Drawing.Size(31, 13);
             this.colorLabel.TabIndex = 9;
@@ -509,9 +514,9 @@
             // 
             this.colorSelectorPanel.BackColor = System.Drawing.Color.White;
             this.colorSelectorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.colorSelectorPanel.Location = new System.Drawing.Point(65, 19);
+            this.colorSelectorPanel.Location = new System.Drawing.Point(55, 19);
             this.colorSelectorPanel.Name = "colorSelectorPanel";
-            this.colorSelectorPanel.Size = new System.Drawing.Size(96, 26);
+            this.colorSelectorPanel.Size = new System.Drawing.Size(82, 26);
             this.colorSelectorPanel.TabIndex = 10;
             this.colorSelectorPanel.Click += new System.EventHandler(this.colorSelectorPanel_Click);
             // 
@@ -576,28 +581,28 @@
             // measureChart
             // 
             this.measureChart.BackColor = System.Drawing.SystemColors.Control;
-            chartArea1.AxisX.LabelStyle.Enabled = false;
-            chartArea1.AxisX.MajorGrid.Enabled = false;
-            chartArea1.AxisX.MajorTickMark.Enabled = false;
-            chartArea1.AxisY.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
-            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.DarkGray;
-            chartArea1.AxisY.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
-            chartArea1.BackColor = System.Drawing.Color.LightGray;
-            chartArea1.Name = "ChartArea1";
-            this.measureChart.ChartAreas.Add(chartArea1);
+            chartArea3.AxisX.LabelStyle.Enabled = false;
+            chartArea3.AxisX.MajorGrid.Enabled = false;
+            chartArea3.AxisX.MajorTickMark.Enabled = false;
+            chartArea3.AxisY.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
+            chartArea3.AxisY.MajorGrid.LineColor = System.Drawing.Color.DarkGray;
+            chartArea3.AxisY.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
+            chartArea3.BackColor = System.Drawing.Color.LightGray;
+            chartArea3.Name = "ChartArea1";
+            this.measureChart.ChartAreas.Add(chartArea3);
             this.measureChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend1.Name = "Legend1";
-            this.measureChart.Legends.Add(legend1);
+            legend3.Name = "Legend1";
+            this.measureChart.Legends.Add(legend3);
             this.measureChart.Location = new System.Drawing.Point(3, 33);
             this.measureChart.Name = "measureChart";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series1.IsVisibleInLegend = false;
-            series1.Legend = "Legend1";
-            series1.MarkerSize = 7;
-            series1.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
-            series1.Name = "Series1";
-            this.measureChart.Series.Add(series1);
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series3.IsVisibleInLegend = false;
+            series3.Legend = "Legend1";
+            series3.MarkerSize = 7;
+            series3.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series3.Name = "Series1";
+            this.measureChart.Series.Add(series3);
             this.measureChart.Size = new System.Drawing.Size(466, 294);
             this.measureChart.TabIndex = 1;
             this.measureChart.Text = "chart1";
@@ -669,7 +674,7 @@
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Controls.Add(this.groupBoxHistory, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.groupBoxDefaults, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel7, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(484, 0);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
@@ -700,7 +705,7 @@
             this.groupBoxDefaults.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBoxDefaults.Location = new System.Drawing.Point(3, 3);
             this.groupBoxDefaults.Name = "groupBoxDefaults";
-            this.groupBoxDefaults.Size = new System.Drawing.Size(494, 54);
+            this.groupBoxDefaults.Size = new System.Drawing.Size(369, 54);
             this.groupBoxDefaults.TabIndex = 0;
             this.groupBoxDefaults.TabStop = false;
             this.groupBoxDefaults.Text = "Defaults";
@@ -722,11 +727,54 @@
             this.saveMeasureListDialog.Filter = "MAS345 binary logs|*.mas345|All Files|*.*";
             this.saveMeasureListDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveMeasureListDialog_FileOk);
             // 
-            // saveChartDialog
+            // exportGraphDialog
             // 
-            this.saveChartDialog.DefaultExt = "png";
-            this.saveChartDialog.Filter = ".png|*.png|.jpg|*.jpg|.gif|*.gif|.bmp|*.bmp|All files|*.*";
-            this.saveChartDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveChartDialog_FileOk);
+            this.exportGraphDialog.DefaultExt = "png";
+            this.exportGraphDialog.Filter = ".png|*.png|.jpg|*.jpg|.gif|*.gif|.bmp|*.bmp|All files|*.*";
+            this.exportGraphDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.exportGraphDialog_FileOk);
+            // 
+            // tableLayoutPanel7
+            // 
+            this.tableLayoutPanel7.ColumnCount = 2;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 75F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel7.Controls.Add(this.clearHistoryButton, 1, 0);
+            this.tableLayoutPanel7.Controls.Add(this.groupBoxDefaults, 0, 0);
+            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+            this.tableLayoutPanel7.RowCount = 1;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(500, 60);
+            this.tableLayoutPanel7.TabIndex = 8;
+            // 
+            // clearHistoryButton
+            // 
+            this.clearHistoryButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.clearHistoryButton.Location = new System.Drawing.Point(378, 8);
+            this.clearHistoryButton.Margin = new System.Windows.Forms.Padding(3, 8, 3, 3);
+            this.clearHistoryButton.Name = "clearHistoryButton";
+            this.clearHistoryButton.Size = new System.Drawing.Size(119, 49);
+            this.clearHistoryButton.TabIndex = 7;
+            this.clearHistoryButton.Text = "Clear history";
+            this.clearHistoryButton.UseVisualStyleBackColor = true;
+            this.clearHistoryButton.Click += new System.EventHandler(this.clearHistoryButton_Click);
+            // 
+            // serialPort1
+            // 
+            this.serialPort1.BaudRate = 600;
+            this.serialPort1.DataBits = 7;
+            this.serialPort1.DtrEnable = true;
+            this.serialPort1.ReadTimeout = 2000;
+            this.serialPort1.StopBits = System.IO.Ports.StopBits.Two;
+            // 
+            // exportHistoryToExcelToolStripMenuItem
+            // 
+            this.exportHistoryToExcelToolStripMenuItem.Name = "exportHistoryToExcelToolStripMenuItem";
+            this.exportHistoryToExcelToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.exportHistoryToExcelToolStripMenuItem.Text = "Export History to Excel";
+            this.exportHistoryToExcelToolStripMenuItem.Click += new System.EventHandler(this.exportHistoryToExcelToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -767,6 +815,7 @@
             this.groupBoxHistory.ResumeLayout(false);
             this.groupBoxDefaults.ResumeLayout(false);
             this.groupBoxDefaults.PerformLayout();
+            this.tableLayoutPanel7.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -828,8 +877,11 @@
         private System.Windows.Forms.ColorDialog gridColorDialog1;
         private System.Windows.Forms.OpenFileDialog openMeasureListDialog;
         private System.Windows.Forms.SaveFileDialog saveMeasureListDialog;
-        private System.Windows.Forms.SaveFileDialog saveChartDialog;
+        private System.Windows.Forms.SaveFileDialog exportGraphDialog;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
+        private System.Windows.Forms.Button clearHistoryButton;
+        private System.Windows.Forms.ToolStripMenuItem exportHistoryToExcelToolStripMenuItem;
     }
 }
 

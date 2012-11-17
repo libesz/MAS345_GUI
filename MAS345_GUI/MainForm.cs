@@ -59,6 +59,7 @@ namespace MAS345_GUI
                     contCheckBox.Enabled = false;
                     ConnectButton.Enabled = false;
                     groupBoxDefaults.Enabled = false;
+                    clearHistoryButton.Enabled = false;
                     groupBoxHistory.Enabled = false;
                     startButton.Text = "Stop";
                 }
@@ -67,6 +68,7 @@ namespace MAS345_GUI
                     ConnectButton.Enabled = true;
                     contCheckBox.Enabled = true;
                     groupBoxDefaults.Enabled = true;
+                    clearHistoryButton.Enabled = true;
                     groupBoxHistory.Enabled = true;
                     startButton.Text = "Start";
                 }
@@ -147,9 +149,22 @@ namespace MAS345_GUI
 
                     backgroundWorker1.ReportProgress(1, NewMeasure);
                 }
-                catch
+                catch (TimeoutException)
                 {
                     backgroundWorker1.ReportProgress(2, "Can't recieve data from " + serialPort1.PortName);
+                }
+                catch (InvalidDataException)
+                {
+                    backgroundWorker1.ReportProgress(2, "Value out of range");
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    backgroundWorker1.ReportProgress(2, "Invalid data received");
+                }
+                catch (InvalidOperationException)
+                {
+                    backgroundWorker1.ReportProgress(2, "The port has been closed");
+                    Connected = false;
                 }
             }
             while (Port.ContinousMode);
@@ -372,6 +387,7 @@ namespace MAS345_GUI
             }
             measureChart.Visible = true;
             exportGraphToImageToolStripMenuItem.Enabled = true;
+            exportHistoryToExcelToolStripMenuItem.Enabled = true;
         }
 
         private void initGraph()
@@ -379,6 +395,7 @@ namespace MAS345_GUI
             measureChart.Titles.Clear();
             measureChart.Series[0].Points.Clear();
             exportGraphToImageToolStripMenuItem.Enabled = false;
+            exportHistoryToExcelToolStripMenuItem.Enabled = false;
             measureChart.Visible = false;
         }
 
@@ -491,7 +508,7 @@ namespace MAS345_GUI
 
         private void exportGraphToImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            saveChartDialog.ShowDialog();
+            exportGraphDialog.ShowDialog();
         }
 
         private void saveMeasureListDialog_FileOk(object sender, CancelEventArgs e)
@@ -510,11 +527,11 @@ namespace MAS345_GUI
             }
         }
 
-        private void saveChartDialog_FileOk(object sender, CancelEventArgs e)
+        private void exportGraphDialog_FileOk(object sender, CancelEventArgs e)
         {
-            string a = Path.GetExtension(saveChartDialog.FileName);
+            string a = Path.GetExtension(exportGraphDialog.FileName);
             ChartImageFormat ImageFormat = ChartImageFormat.Png;
-            switch (Path.GetExtension(saveChartDialog.FileName))
+            switch (Path.GetExtension(exportGraphDialog.FileName))
             {
                 case ".png":
                     ImageFormat = ChartImageFormat.Png;
@@ -529,7 +546,7 @@ namespace MAS345_GUI
                     ImageFormat = ChartImageFormat.Gif;
                     break;
             }
-            measureChart.SaveImage(saveChartDialog.FileName, ImageFormat);
+            measureChart.SaveImage(exportGraphDialog.FileName, ImageFormat);
         }
 
         private void openMeasureListDialog_FileOk(object sender, CancelEventArgs e)
@@ -571,7 +588,11 @@ namespace MAS345_GUI
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            bool Answer = AreYouSureBox.ShowDialog("Are You sure? All unsaved measure will be lost!");
+            bool Answer = (MeasureList.Count == 0);
+            if (!Answer)
+            {
+                Answer = AreYouSureBox.ShowDialog("Are You sure? All unsaved measure will be lost!");
+            }
             if (Answer)
             {
                 if (serialPort1.IsOpen)
@@ -583,6 +604,54 @@ namespace MAS345_GUI
             {
                 e.Cancel = true;
             }
+        }
+
+        private void clearHistoryButton_Click(object sender, EventArgs e)
+        {
+            mAS345dataBindingSource.Clear();
+        }
+
+        private void exportHistoryToExcelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // creating Excel Application
+            Microsoft.Office.Interop.Excel._Application app = new Microsoft.Office.Interop.Excel.Application();
+            app.ScreenUpdating = false;
+            // creating new WorkBook within Excel application
+            Microsoft.Office.Interop.Excel._Workbook workbook = app.Workbooks.Add();
+            // creating new Excelsheet in workbook
+            Microsoft.Office.Interop.Excel._Worksheet worksheet = null;
+            // see the excel sheet behind the program
+            app.Visible = true;
+            // get the reference of first sheet. By default its name is Sheet1.
+            // store its reference to worksheet
+
+            worksheet = workbook.Sheets["Sheet1"];
+            worksheet = workbook.ActiveSheet;
+            // changing the name of active sheet
+            worksheet.Name = "Exported from MAS345 GUI";
+            // storing header part in Excel
+            for (int i = 1; i < dataGridView1.Columns.Count - 1; i++)
+            {
+                worksheet.Cells[1, i] = dataGridView1.Columns[i - 1].HeaderText;
+                worksheet.Cells[1, i].Borders.Color = ColorTranslator.ToOle(Color.Black);
+                worksheet.Cells[1, i].Font.Bold = true;
+            }
+            // storing Each row and column value to excel sheet
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                for (int j = 0; j < dataGridView1.Columns.Count - 2; j++)
+                {
+                    worksheet.Cells[i + 2, j + 1] = dataGridView1.Rows[i].Cells[j].Value.ToString();
+                    worksheet.Cells[i + 2, j + 1].Interior.Color = ColorTranslator.ToOle((dataGridView1.Rows[i].DataBoundItem as MeasureListItem).ItemColor);
+                    worksheet.Cells[i + 2, j + 1].Borders.Color = ColorTranslator.ToOle(Color.Black);
+                }
+            }
+            // save the application
+            //workbook.SaveAs("c:\\output.xls", System.Type.Missing, System.Type.Missing, System.Type.Missing, System.Type.Missing, System.Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, System.Type.Missing, System.Type.Missing, System.Type.Missing, System.Type.Missing); 
+            // Exit from the application
+            worksheet.get_Range("A1", "D"+dataGridView1.RowCount+1).Columns.AutoFit();
+            app.ScreenUpdating = true;
+            //app.Quit();
         }
     }
 
