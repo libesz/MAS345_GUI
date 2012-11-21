@@ -41,7 +41,10 @@ namespace MAS345_GUI
 
         public MeasureUnit ReadData()
         {
-            MeasureUnit ReturnValue = new MeasureUnit(DateTime.Now, MeasureType.DcCurrent, 1.0);
+            //MeasureUnit ReturnValue = new MeasureUnit(DateTime.Now, MeasureType.DcCurrent, 1.0);
+            DateTime ReadedDateTime;
+            MeasureType ReadedType;
+            Double ReadedValue;
 #if DEBUG
             Thread.Sleep(1000);
             ReturnValue = Emulator.GiveNextMeasure();
@@ -57,6 +60,7 @@ namespace MAS345_GUI
             Read(input_data, 0, 14);
 
             input_string = enc.GetString(input_data).Trim();
+            //MessageBox.Show("'" + input_string + "'");
 
             switch (input_string.Substring(9, 4).TrimStart())
             {
@@ -66,7 +70,7 @@ namespace MAS345_GUI
                 case "mA":
                     ValueMultiplier = 0.001;
                     break;
-                case "KOhm":
+                case "kOhm":
                     ValueMultiplier = 1000;
                     break;
                 case "MOhm":
@@ -79,8 +83,7 @@ namespace MAS345_GUI
                 ValueMultiplier *= -1;
             }
 
-            ReturnValue.Time = DateTime.Now;
-            //MessageBox.Show("'" + input_string.Substring(9, 4) + "'");
+            ReadedDateTime = DateTime.Now;
             /*ReturnValue.Unit = input_string.Substring(9, 4);*/
 
             switch(input_string.Substring(0, 2))
@@ -88,54 +91,54 @@ namespace MAS345_GUI
                 case "AC":
                     if (input_string[input_string.Length -1].Equals('A'))
                     {
-                        ReturnValue.Type = MeasureType.AcCurrent;
+                        ReadedType = MeasureType.AcCurrent;
                     }
                     else
                     {
-                        ReturnValue.Type = MeasureType.AcVoltage;
+                        ReadedType = MeasureType.AcVoltage;
                     }
                     break;
                 case "DC":
                     if (input_string[input_string.Length - 1].Equals('A'))
                     {
-                        ReturnValue.Type = MeasureType.DcCurrent;
+                        ReadedType = MeasureType.DcCurrent;
                     }
                     else
                     {
-                        ReturnValue.Type = MeasureType.DcVoltage;
+                        ReadedType = MeasureType.DcVoltage;
                     }
                     break;
                 case "OH":
-                    ReturnValue.Type = MeasureType.Resistance;
+                    ReadedType = MeasureType.Resistance;
                     break;
                 case "DI":
-                    ReturnValue.Type = MeasureType.Diode;
+                    ReadedType = MeasureType.Diode;
                     break;
                 case "TE":
-                    ReturnValue.Type = MeasureType.Temperature;
+                    ReadedType = MeasureType.Temperature;
                     break;
                 case "CA":
-                    ReturnValue.Type = MeasureType.Capacity;
+                    ReadedType = MeasureType.Capacity;
                     break;
                 default:
-                    ReturnValue.Type = MeasureType.hFe;
+                    ReadedType = MeasureType.hFe;
                     break;
             }
 
             try
             {
-                ReturnValue.Value = double.Parse(input_string.Substring(4, 5).Trim(),
-                                                 System.Globalization.NumberStyles.AllowDecimalPoint,
-                                                 System.Globalization.NumberFormatInfo.InvariantInfo);
+                ReadedValue = double.Parse(input_string.Substring(4, 5).Trim(),
+                                           System.Globalization.NumberStyles.AllowDecimalPoint,
+                                           System.Globalization.NumberFormatInfo.InvariantInfo);
             }
             catch
             {
                 throw (new InvalidDataException());
             }
-            ReturnValue.Value *= ValueMultiplier;
+            ReadedValue *= ValueMultiplier;
                  
 #endif
-            return ReturnValue;
+            return new MeasureUnit(ReadedDateTime, ReadedType, ReadedValue);
         }
     }
 
@@ -144,7 +147,7 @@ namespace MAS345_GUI
     {
         public DateTime Time { get; set; }
         public MeasureType Type { get; set; }
-        public Double Value { get; set; }
+        public Double Value;
 
         public string Unit
         {
@@ -169,17 +172,25 @@ namespace MAS345_GUI
                 }
                 if (Type == MeasureType.Resistance)
                 {
+                    /*if (OrigValue >= 1000)
+                    {
+                        ReturnValue = "kΩ";
+                    }
+                    else
+                    {
+                        ReturnValue = "Ω";
+                    }*/
                     ReturnValue = "Ω";
                 }
                 return ReturnValue;
             }
         }
-        public string ValueWithUnit
+        public string ScaledValueWithUnit
         {
             get
             {
                 string ReturnValue = "";
-                if ((Value != 0) && ((Value % 1000) == 0))
+                if (Value >= 1000)
                 {
                     ReturnValue = (Value / 1000).ToString() + " k" + Unit;
                 }
@@ -191,11 +202,11 @@ namespace MAS345_GUI
             }
         }
 
-        public MeasureUnit(DateTime Time, MeasureType Type, Double Value)
+        public MeasureUnit(DateTime NewTime, MeasureType NewType, Double NewValue)
         {
-            this.Time = Time;
-            this.Type = Type;
-            this.Value = Value;
+            this.Time = NewTime;
+            this.Type = NewType;
+            this.Value = NewValue;
         }
         public MeasureUnit(MeasureUnit TheOther): this(TheOther.Time, TheOther.Type, TheOther.Value ) {}
         protected MeasureUnit() { }

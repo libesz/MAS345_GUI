@@ -31,12 +31,14 @@ namespace MAS345_GUI
             {
                 if (value == true)
                 {
+                    ConnectButton.Text = "Disconnect";
                     contCheckBox.Enabled = true;
                     startButton.Enabled = true;
                     portNumberSelector.Enabled = false;
                 }
                 else
                 {
+                    ConnectButton.Text = "Connect";
                     contCheckBox.Enabled = false;
                     startButton.Enabled = false;
                     portNumberSelector.Enabled = true;
@@ -103,7 +105,6 @@ namespace MAS345_GUI
         {
             if (Connected)
             {
-                ConnectButton.Text = "Connect";
                 Connected = false;
 
                 if (serialPort1.IsOpen)
@@ -120,7 +121,6 @@ namespace MAS345_GUI
                     try
                     {
                         serialPort1.Open();
-                        ConnectButton.Text = "Disconnect";
                         Connected = true;
                         toolStripStatusLabel1.Text = "Connected to " + serialPort1.PortName;
                     }
@@ -136,6 +136,11 @@ namespace MAS345_GUI
             }
         }
 
+
+        const int WorkerProgressOk = 1;
+        const int WorkerProgressPortClosedError = 2;
+        const int WorkerProgressOtherError = 3;
+
         void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             MasSerialPort Port = e.Argument as MasSerialPort;
@@ -147,24 +152,23 @@ namespace MAS345_GUI
                 {
                     NewMeasure = new MeasureListItem(Port.ReadData());
 
-                    backgroundWorker1.ReportProgress(1, NewMeasure);
+                    backgroundWorker1.ReportProgress(WorkerProgressOk, NewMeasure);
                 }
                 catch (TimeoutException)
                 {
-                    backgroundWorker1.ReportProgress(2, "Can't recieve data from " + serialPort1.PortName);
+                    backgroundWorker1.ReportProgress(WorkerProgressOtherError, "Can't recieve data from " + serialPort1.PortName);
                 }
                 catch (InvalidDataException)
                 {
-                    backgroundWorker1.ReportProgress(2, "Value out of range");
+                    backgroundWorker1.ReportProgress(WorkerProgressOtherError, "Value out of range");
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    backgroundWorker1.ReportProgress(2, "Invalid data received");
+                    backgroundWorker1.ReportProgress(WorkerProgressOtherError, "Invalid data received");
                 }
                 catch (InvalidOperationException)
                 {
-                    backgroundWorker1.ReportProgress(2, "The port has been closed");
-                    Connected = false;
+                    backgroundWorker1.ReportProgress(WorkerProgressPortClosedError, "The port has been closed");
                 }
             }
             while (Port.ContinousMode);
@@ -173,14 +177,14 @@ namespace MAS345_GUI
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            if (e.ProgressPercentage == 1)
+            if (e.ProgressPercentage == WorkerProgressOk)
             {
                 int LastRow = 0;
                 MeasureListItem NewMeasure = e.UserState as MeasureListItem;
                 NewMeasure.ItemColor = commonColorDialog1.Color;
                 NewMeasure.ItemComment = commentTextBox.Text;
 
-                bigLabel.Text = NewMeasure.ValueWithUnit;
+                bigLabel.Text = NewMeasure.ScaledValueWithUnit;
                 modeLabel.Text = NewMeasure.Type.ToString();
                 LastRow = mAS345dataBindingSource.Add(NewMeasure);
 
@@ -193,6 +197,10 @@ namespace MAS345_GUI
             else
             {
                 toolStripStatusLabel1.Text = e.UserState as String;
+                if (e.ProgressPercentage == WorkerProgressPortClosedError)
+                {
+                    Connected = false;
+                }
             }
         }
 
@@ -362,7 +370,7 @@ namespace MAS345_GUI
                 series.Points[series.Points.Count - 1].Color = MeasureOnGraph[i].ItemColor;
                 series.Points[series.Points.Count - 1].BorderColor = Color.Black;
 
-                string MeasureText = MeasureOnGraph[i].ValueWithUnit;
+                string MeasureText = MeasureOnGraph[i].ScaledValueWithUnit;
                 if (((ShowComment && (MeasureOnGraph[i].ItemComment.Length > 0)) || ShowTime || ShowDate))
                 {
                     MeasureText += " (";
@@ -652,6 +660,12 @@ namespace MAS345_GUI
             worksheet.get_Range("A1", "D"+dataGridView1.RowCount+1).Columns.AutoFit();
             app.ScreenUpdating = true;
             //app.Quit();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox Box = new AboutBox();
+            Box.ShowDialog();
         }
     }
 
