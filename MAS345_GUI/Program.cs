@@ -15,7 +15,14 @@ namespace MAS345_GUI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new MainForm());
         }
     }
+}
+
+[AttributeUsage(AttributeTargets.Assembly)]
+public class AssemblyGitBuild : Attribute
+{
+    public string gitBuild { get; private set; }
+    public AssemblyGitBuild(string txt) { gitBuild = txt; }
 }
