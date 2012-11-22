@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Threading;
 using System.IO.Ports;
@@ -13,8 +14,6 @@ using System.IO;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Net;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace MAS345_GUI
 {
@@ -108,11 +107,19 @@ namespace MAS345_GUI
             try
             {
                 WebClient c = new WebClient();
-                StringBuilder data = new StringBuilder(c.DownloadString("https://api.github.com/repos/libesz/MAS345_GUI/commits?sha=master&per_page=1"));
-                data[0] = ' ';
-                data[data.Length - 1] = ' ';
-                JObject o = JObject.Parse(data.ToString());
-                LatestGitHash = o["sha"].ToString();
+                string Data = c.DownloadString("https://api.github.com/repos/libesz/MAS345_GUI/commits?sha=master&per_page=1");
+                using ( StringReader Reader = new StringReader( Data ) )
+                {
+                    string Line;
+                    while ((Line = Reader.ReadLine()) != null)
+                    {
+                        int tempIndex = Line.IndexOf("sha");
+                        //MessageBox.Show("'" + (Line.Substring(tempIndex + 6, 40) + "'"));
+                        LatestGitHash = Line.Substring(tempIndex + 6, 40);
+                        break;
+                    }
+
+                }
             }
             catch
             {
