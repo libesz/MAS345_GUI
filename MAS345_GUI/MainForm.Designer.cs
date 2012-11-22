@@ -49,6 +49,7 @@
             this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Delete = new System.Windows.Forms.DataGridViewButtonColumn();
             this.ChangeColor = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.mAS345dataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBoxActual = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.modeLabel = new System.Windows.Forms.Label();
@@ -96,10 +97,10 @@
             this.openMeasureListDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveMeasureListDialog = new System.Windows.Forms.SaveFileDialog();
             this.exportGraphDialog = new System.Windows.Forms.SaveFileDialog();
-            this.mAS345dataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.serialPort1 = new MAS345_GUI.MasSerialPort();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mAS345dataBindingSource)).BeginInit();
             this.groupBoxActual.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -116,7 +117,6 @@
             this.groupBoxHistory.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.groupBoxDefaults.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.mAS345dataBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // bigLabel
@@ -124,7 +124,7 @@
             this.bigLabel.BackColor = System.Drawing.SystemColors.Info;
             this.bigLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.bigLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bigLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold);
+            this.bigLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 32.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bigLabel.ForeColor = System.Drawing.SystemColors.HotTrack;
             this.bigLabel.Location = new System.Drawing.Point(3, 0);
             this.bigLabel.Name = "bigLabel";
@@ -284,6 +284,10 @@
             this.ChangeColor.UseColumnTextForButtonValue = true;
             this.ChangeColor.Width = 50;
             // 
+            // mAS345dataBindingSource
+            // 
+            this.mAS345dataBindingSource.ListChanged += new System.ComponentModel.ListChangedEventHandler(this.mAS345dataBindingSource_ListChanged);
+            // 
             // groupBoxActual
             // 
             this.groupBoxActual.Controls.Add(this.tableLayoutPanel4);
@@ -293,7 +297,7 @@
             this.groupBoxActual.Size = new System.Drawing.Size(233, 94);
             this.groupBoxActual.TabIndex = 8;
             this.groupBoxActual.TabStop = false;
-            this.groupBoxActual.Text = "Actual";
+            this.groupBoxActual.Text = "Last";
             // 
             // tableLayoutPanel4
             // 
@@ -787,10 +791,6 @@
             this.exportGraphDialog.Filter = ".png|*.png|.jpg|*.jpg|.gif|*.gif|.bmp|*.bmp|All files|*.*";
             this.exportGraphDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.exportGraphDialog_FileOk);
             // 
-            // mAS345dataBindingSource
-            // 
-            this.mAS345dataBindingSource.ListChanged += new System.ComponentModel.ListChangedEventHandler(this.mAS345dataBindingSource_ListChanged);
-            // 
             // serialPort1
             // 
             this.serialPort1.BaudRate = 600;
@@ -819,6 +819,7 @@
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mAS345dataBindingSource)).EndInit();
             this.groupBoxActual.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
@@ -839,7 +840,6 @@
             this.tableLayoutPanel7.ResumeLayout(false);
             this.groupBoxDefaults.ResumeLayout(false);
             this.groupBoxDefaults.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.mAS345dataBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
