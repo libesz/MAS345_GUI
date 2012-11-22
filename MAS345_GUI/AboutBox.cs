@@ -6,9 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.Net;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Reflection;
 
 namespace MAS345_GUI
 {
@@ -19,25 +17,48 @@ namespace MAS345_GUI
             InitializeComponent();
         }
 
-        private void AboutBox_Load(object sender, EventArgs e)
+        public static void ShowDialog(string CurrentBuild, string LatestBuild)
         {
-            String gitBuild = "unknown";
+            AboutBox Instance = new AboutBox();
+            Instance.versionLabel.Text = "Version: " + Assembly.GetExecutingAssembly().GetName().Version.ToString()
+                                         + ", build: " + CurrentBuild.Substring(0,8);
+            Instance.ShowDialog();
+       }
 
+        private void gitHubLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
             try
             {
-                gitBuild = typeof(AssemblyGitBuild).Assembly.GetCustomAttributes(typeof(AssemblyGitBuild), false).Cast<AssemblyGitBuild>().First().gitBuild;
+                System.Diagnostics.Process.Start(Properties.Settings.Default.GitHubUrl);
             }
             catch
             {
-                gitBuild = "falied";
+                MessageBox.Show("Browser start error!");
             }
-            WebClient c = new WebClient();
-            StringBuilder data = new StringBuilder(c.DownloadString("https://api.github.com/repos/libesz/MAS345_GUI/commits?sha=master&per_page=1"));
-            data[0] = ' ';
-            data[data.Length - 1] = ' ';
-            JObject o = JObject.Parse(data.ToString());
-            label1.Text = "Version " + Application.ProductVersion + " Build " + gitBuild + " github headrev: " + o["sha"];
+        }
 
+        private void homePageLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(Properties.Settings.Default.HomePageUrl);
+            }
+            catch
+            {
+                MessageBox.Show("Browser start error!");
+            }
+        }
+
+        private void licenseLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(Properties.Settings.Default.LicenseUrl);
+            }
+            catch
+            {
+                MessageBox.Show("Browser start error!");
+            }
         }
     }
 }

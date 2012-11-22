@@ -11,5 +11,14 @@
     <Setting Name="GraphShowTime" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="GitHubUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://github.com/libesz/MAS345_GUI/</Value>
+    </Setting>
+    <Setting Name="HomePageUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://libesz.digitaltrip.hu/mas-345/</Value>
+    </Setting>
+    <Setting Name="LicenseUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://www.gnu.org/licenses/</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

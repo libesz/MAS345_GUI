@@ -117,4 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="descLabel.Text" xml:space="preserve">
+    <value>This software is designed to communicate with the MASTECH MAS-345 (theoretically also for 343 and 345, not tested) Digital MultiMeter over (RS232) serial port. The program supports to capture, visualize, comment, save and export the measurements into various formats.
+If You found any bugs or need a new feature, feel free to contribute on GitHub or comment at the homepage, see the links below.
+
+Copyright (C) 2012 Huszty Gergo
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</value>
+  </data>
 </root>

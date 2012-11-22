@@ -12,6 +12,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Net;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MAS345_GUI
 {
@@ -19,6 +22,9 @@ namespace MAS345_GUI
     {
         private List<MeasureListItem> MeasureList;
         private List<MeasureListItem> MeasureOnGraph;
+
+        private string CurrentGitHash = "unknown";
+        private string LatestGitHash = "unknown";
 
         private bool _Connected = false;
         private bool Connected
@@ -86,6 +92,38 @@ namespace MAS345_GUI
 
             initGraph();
             lastMeasureTypeRB.Checked = true;
+            CheckUpdate();
+        }
+
+        private void CheckUpdate()
+        {
+            try
+            {
+                CurrentGitHash = typeof(AssemblyGitBuild).Assembly.GetCustomAttributes(typeof(AssemblyGitBuild), false).Cast<AssemblyGitBuild>().First().gitBuild;
+            }
+            catch
+            {
+                CurrentGitHash = "falied";
+            }
+            try
+            {
+                WebClient c = new WebClient();
+                StringBuilder data = new StringBuilder(c.DownloadString("https://api.github.com/repos/libesz/MAS345_GUI/commits?sha=master&per_page=1"));
+                data[0] = ' ';
+                data[data.Length - 1] = ' ';
+                JObject o = JObject.Parse(data.ToString());
+                LatestGitHash = o["sha"].ToString();
+            }
+            catch
+            {
+                LatestGitHash = "failed";
+            }
+
+            if ((CurrentGitHash.Length == 40) && (LatestGitHash.Length == 40) && (CurrentGitHash != LatestGitHash))
+            {
+                toolStripStatusLabel2.Text = "Current: " + CurrentGitHash + ", latest: " + LatestGitHash;
+                toolStripStatusLabel2.Text = "Update available! Click here to download.";
+            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -664,8 +702,22 @@ namespace MAS345_GUI
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AboutBox Box = new AboutBox();
-            Box.ShowDialog();
+            AboutBox.ShowDialog(CurrentGitHash, LatestGitHash);
+        }
+
+        private void toolStripStatusLabel2_Click(object sender, EventArgs e)
+        {
+            if (toolStripStatusLabel2.Text.Length > 0)
+            {
+                try
+                {
+                    System.Diagnostics.Process.Start(Properties.Settings.Default.HomePageUrl);
+                }
+                catch
+                {
+                    MessageBox.Show("Browser start error!");
+                }
+            }
         }
     }
 

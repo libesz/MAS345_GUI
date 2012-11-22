@@ -36,10 +36,12 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.bigLabel = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -47,7 +49,6 @@
             this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Delete = new System.Windows.Forms.DataGridViewButtonColumn();
             this.ChangeColor = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.mAS345dataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBoxActual = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.modeLabel = new System.Windows.Forms.Label();
@@ -64,6 +65,7 @@
             this.dateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.commonColorDialog1 = new System.Windows.Forms.ColorDialog();
             this.groupBoxControl = new System.Windows.Forms.GroupBox();
             this.startButton = new System.Windows.Forms.Button();
@@ -94,11 +96,10 @@
             this.openMeasureListDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveMeasureListDialog = new System.Windows.Forms.SaveFileDialog();
             this.exportGraphDialog = new System.Windows.Forms.SaveFileDialog();
+            this.mAS345dataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.serialPort1 = new MAS345_GUI.MasSerialPort();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mAS345dataBindingSource)).BeginInit();
             this.groupBoxActual.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -115,6 +116,7 @@
             this.groupBoxHistory.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.groupBoxDefaults.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mAS345dataBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // bigLabel
@@ -141,7 +143,8 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1});
+            this.toolStripStatusLabel1,
+            this.toolStripStatusLabel2});
             this.statusStrip1.Location = new System.Drawing.Point(0, 479);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(984, 22);
@@ -152,8 +155,18 @@
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(128, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(969, 17);
+            this.toolStripStatusLabel1.Spring = true;
             this.toolStripStatusLabel1.Text = "MAS345 GUI started up";
+            this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.IsLink = true;
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(0, 17);
+            this.toolStripStatusLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolStripStatusLabel2.Click += new System.EventHandler(this.toolStripStatusLabel2_Click);
             // 
             // dataGridView1
             // 
@@ -270,10 +283,6 @@
             this.ChangeColor.Text = "Select";
             this.ChangeColor.UseColumnTextForButtonValue = true;
             this.ChangeColor.Width = 50;
-            // 
-            // mAS345dataBindingSource
-            // 
-            this.mAS345dataBindingSource.ListChanged += new System.ComponentModel.ListChangedEventHandler(this.mAS345dataBindingSource_ListChanged);
             // 
             // groupBoxActual
             // 
@@ -416,6 +425,13 @@
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // commonColorDialog1
             // 
@@ -771,6 +787,10 @@
             this.exportGraphDialog.Filter = ".png|*.png|.jpg|*.jpg|.gif|*.gif|.bmp|*.bmp|All files|*.*";
             this.exportGraphDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.exportGraphDialog_FileOk);
             // 
+            // mAS345dataBindingSource
+            // 
+            this.mAS345dataBindingSource.ListChanged += new System.ComponentModel.ListChangedEventHandler(this.mAS345dataBindingSource_ListChanged);
+            // 
             // serialPort1
             // 
             this.serialPort1.BaudRate = 600;
@@ -778,13 +798,6 @@
             this.serialPort1.DtrEnable = true;
             this.serialPort1.ReadTimeout = 2000;
             this.serialPort1.StopBits = System.IO.Ports.StopBits.Two;
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -794,6 +807,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(1000, 539);
             this.Name = "MainForm";
@@ -805,7 +819,6 @@
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mAS345dataBindingSource)).EndInit();
             this.groupBoxActual.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
@@ -826,6 +839,7 @@
             this.tableLayoutPanel7.ResumeLayout(false);
             this.groupBoxDefaults.ResumeLayout(false);
             this.groupBoxDefaults.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mAS345dataBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -893,6 +907,7 @@
         private System.Windows.Forms.DataGridViewButtonColumn Delete;
         private System.Windows.Forms.DataGridViewButtonColumn ChangeColor;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
     }
 }
 
