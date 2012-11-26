@@ -107,7 +107,7 @@ namespace MAS345_GUI
             try
             {
                 WebClient c = new WebClient();
-                string Data = c.DownloadString("https://api.github.com/repos/libesz/MAS345_GUI/commits?sha=master&per_page=1");
+                string Data = c.DownloadString("https://api.github.com/repos/libesz/MAS345_GUI/git/refs/heads/master");
                 using ( StringReader Reader = new StringReader( Data ) )
                 {
                     string Line;
