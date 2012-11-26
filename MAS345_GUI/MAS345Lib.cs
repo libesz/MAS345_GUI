@@ -41,14 +41,13 @@ namespace MAS345_GUI
 
         public MeasureUnit ReadData()
         {
-            //MeasureUnit ReturnValue = new MeasureUnit(DateTime.Now, MeasureType.DcCurrent, 1.0);
+#if DEBUG
+            Thread.Sleep(1000);
+            return Emulator.GiveNextMeasure();
+#else
             DateTime ReadedDateTime;
             MeasureType ReadedType;
             Double ReadedValue;
-#if DEBUG
-            Thread.Sleep(1000);
-            ReturnValue = Emulator.GiveNextMeasure();
-#else
             double ValueMultiplier = 1;
             System.Text.Encoding enc = System.Text.Encoding.ASCII;
             byte[] input_data = new byte[14];
@@ -136,9 +135,8 @@ namespace MAS345_GUI
                 throw (new InvalidDataException());
             }
             ReadedValue *= ValueMultiplier;
-                 
+            return new MeasureUnit(ReadedDateTime, ReadedType, ReadedValue);                 
 #endif
-            return new MeasureUnit(ReadedDateTime, ReadedType, ReadedValue);
         }
     }
 

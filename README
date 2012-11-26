@@ -4,8 +4,8 @@ MAS345_GUI
 
  The code is pretty dirty, because I am not a C# expert, just learning it, so if you want to join and improve it, don't hesitate.
  
- Currently there is only one feature: displaying the actual measure, with a history table.
-
+ This new version covers some new features, such as measurement visualization, save/load/export, etc.
  
 Source is available on: https://github.com/libesz/MAS345_GUI
-Created with Microsoft Visual Studio Express 2010 (.NET framework 3.5)
+Created with Microsoft Visual Studio Express 2010 (.NET framework 4.0)
+License: GPL

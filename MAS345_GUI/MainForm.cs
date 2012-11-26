@@ -128,8 +128,11 @@ namespace MAS345_GUI
 
             if ((CurrentGitHash.Length == 40) && (LatestGitHash.Length == 40) && (CurrentGitHash != LatestGitHash))
             {
+#if DEBUG
                 toolStripStatusLabel2.Text = "Current: " + CurrentGitHash + ", latest: " + LatestGitHash;
+#else
                 toolStripStatusLabel2.Text = "Update available! Click here to download.";
+#endif
             }
         }
 
@@ -402,6 +405,11 @@ namespace MAS345_GUI
             bool ShowComment = Properties.Settings.Default.GraphShowComment;
             bool ShowDate = Properties.Settings.Default.GraphShowDate;
             bool ShowTime = Properties.Settings.Default.GraphShowTime;
+
+            if (dataGridView1.EditingControl != null) //exception might happen when drawing while editing comment
+            {
+                return;
+            }
 
             measureChart.Titles.Clear();
             measureChart.Titles.Add("Measurement: " + MeasureOnGraph[0].Type.ToString() + " [" + MeasureOnGraph[0].Unit + "]");
