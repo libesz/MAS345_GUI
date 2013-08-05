@@ -18,7 +18,7 @@
       <Value Profile="(Default)">http://libesz.digitaltrip.hu/mas-345/</Value>
     </Setting>
     <Setting Name="LicenseUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://www.gnu.org/licenses/</Value>
+      <Value Profile="(Default)">http://www.gnu.org/licenses/gpl.txt</Value>
     </Setting>
   </Settings>
 </SettingsFile>
